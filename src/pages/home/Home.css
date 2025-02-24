@@ -1,0 +1,10 @@
+.logo-container {  
+    display: flex; 
+    align-items: center; 
+    gap: 10px; 
+}
+
+.climate-logo, .cleets-logo {
+    max-height: 45px;
+    object-fit: contain;
+  }
