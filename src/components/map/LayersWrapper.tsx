@@ -2,12 +2,13 @@ import { useRef, useState, useEffect, useCallback } from "react"
 import { MapboxOverlay } from "@deck.gl/mapbox"
 import { Layer } from "@deck.gl/core"
 
-import buildScatterLayer from "./scatterLayer"
+// import buildScatterLayer from "./scatterLayer"
 import buildPolygonLayer from "./polygonLayer"
-
 
 interface ILayersWrapper {
   map: mapboxgl.Map
+  mainLayersIds: string[]
+  timeStamp: number
 }
 
 const LayersWrapper = (props: ILayersWrapper) => {
@@ -16,19 +17,37 @@ const LayersWrapper = (props: ILayersWrapper) => {
   const [layers, setLayers] = useState<Layer[]>([])
 
   
+  // const buildLayers = useCallback(() => {
+
+  //   ;(async () => {
+  //     const scatterLayer = buildScatterLayer()
+  //     const response = await fetch("./src/assets/no2_wrf_ct.geojson")
+
+  //     const polygonLayer = buildPolygonLayer(response.json());
+  //     const layersArr: Layer[] = [scatterLayer, polygonLayer]
+
+  //     setLayers(layersArr)
+
+  //   })()
+  // },[])
+
   const buildLayers = useCallback(() => {
 
     ;(async () => {
-      const scatterLayer = buildScatterLayer()
-      // const response = await fetch("./src/assets/no2_wrf_ct.geojson");
-      const response = await fetch("./src/assets/bg_prcp.json");
-      const data = await response.json();
-      const polygonLayer = buildPolygonLayer(data);
-      const layersArr: Layer[] = [scatterLayer, polygonLayer]
+      const layersArr: Layer[] = []
+
+      for (let i = 0; i < props.mainLayersIds.length; i++) {
+        const response = await fetch(`./src/assets/${props.mainLayersIds[i]}_wrf_ct.json`)
+        const data = response.json()
+        const polygonLayer = buildPolygonLayer(data, props.mainLayersIds[i], props.timeStamp)
+        layersArr.push(polygonLayer)
+      }
+
+
       setLayers(layersArr)
 
     })()
-  },[])
+  },[props.mainLayersIds, props.timeStamp])
 
   const loadLayers = useCallback(() => {
     if (!props.map) return

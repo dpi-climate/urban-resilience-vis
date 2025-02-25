@@ -1,12 +1,25 @@
 import Map from "./Map"
+import MapSlider from "../slider/MapSlider"
+import { useEffect, useState } from "react"
 
 
 interface MapWrapperProps {
+  mainLayersIds: string[]
 }
 
-const MapWrapper: React.FC<MapWrapperProps> = () => {
+const MapWrapper: React.FC<MapWrapperProps> = (props) => {
 
-  return <Map/>
+  const [timeStamp, setTimeStamp] = useState(0)
+
+  return (
+    <>
+      <Map mainLayersIds={props.mainLayersIds} timeStamp={timeStamp}/>
+      <MapSlider value={timeStamp} onChange={setTimeStamp}/>
+    </>
+
+
+  )
+
 
 }
 

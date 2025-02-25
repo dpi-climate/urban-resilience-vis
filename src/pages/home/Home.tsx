@@ -2,19 +2,35 @@ import "./Home.css"
 import MapWrapper from "../../components/map/MapWrapper"
 import DrawerWrapper from "../../components/drawer/DrawerWrapper"
 import VerticalButtonList from "../../components/drawer/layers-content"
+import ModeOptions from "../../components/drawer/map-mode-content"
+import { Divider } from "@mui/material"
+import { useState } from "react"
 
 const Home = () => {
+
+  const [mode, setMode] = useState("single")
+  // const [mode, setMode] = useState("side-by-side")
+  const [mainLayersIds, setMainLayersIds] = useState([])
 
   const renderMenu = () => {
     return (
       <DrawerWrapper anchor="right" buttons={["Layers"]}>
-        <VerticalButtonList/>
+        {/* <ModeOptions/>
+        <Divider/> */}
+        <VerticalButtonList 
+          mode={mode} 
+          setMainLayersIds={setMainLayersIds} 
+          // setSecondaryLayersIds={setSecondaryLayersIds}
+          mainLayersIds={mainLayersIds}
+          
+          />
+        <Divider/>
       </DrawerWrapper>
     )
   }
   
   const renderMapWrapper = () => {
-    return <MapWrapper/>
+    return <MapWrapper mainLayersIds={mainLayersIds}/>
   }
 
   const renderHeader = () => {

@@ -9,8 +9,13 @@ import LayersWrapper from "./LayersWrapper"
 
 mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN as string
 
+interface IMapProps {
+  mainLayersIds: string[]
+  timeStamp: number
+}
 
-const Map = () => {
+
+const Map: React.FC<IMapProps> = (props) => {
   const mapContainerRef = useRef<HTMLDivElement | null>(null)
   
   const [map, setMap] = useState<mapboxgl.Map | null>(null)
@@ -42,7 +47,7 @@ const Map = () => {
   
   return (
     <div className="map-container" ref={mapContainerRef}>
-      {map && <LayersWrapper map={map}/>}
+      {map && <LayersWrapper map={map} mainLayersIds={props.mainLayersIds} timeStamp={props.timeStamp}/>}
     </div>
   )
 
