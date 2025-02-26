@@ -19,7 +19,7 @@ const MapSlider: React.FC<{value: number, onChange: any}> = (props) => {
         width: '60vw',
         maxWidth: 'calc(100vw - 40px)',
         position: 'absolute',
-        bottom: 50,
+        bottom: 30,
         left: '50%',
         transform: 'translateX(-50%)',
         overflow: 'hidden',

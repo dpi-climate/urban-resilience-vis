@@ -9,6 +9,9 @@ interface ILayersWrapper {
   map: mapboxgl.Map
   mainLayersIds: string[]
   timeStamp: number
+  onClick: any
+  fillOpacity: number
+  strokeOpacity: number
 }
 
 const LayersWrapper = (props: ILayersWrapper) => {
@@ -39,7 +42,7 @@ const LayersWrapper = (props: ILayersWrapper) => {
       for (let i = 0; i < props.mainLayersIds.length; i++) {
         const response = await fetch(`./src/assets/${props.mainLayersIds[i]}_wrf_ct.json`)
         const data = response.json()
-        const polygonLayer = buildPolygonLayer(data, props.mainLayersIds[i], props.timeStamp)
+        const polygonLayer = buildPolygonLayer(data, props.mainLayersIds[i], props.timeStamp, props.onClick, props.fillOpacity, props.strokeOpacity)
         layersArr.push(polygonLayer)
       }
 
@@ -47,7 +50,7 @@ const LayersWrapper = (props: ILayersWrapper) => {
       setLayers(layersArr)
 
     })()
-  },[props.mainLayersIds, props.timeStamp])
+  },[props.mainLayersIds, props.timeStamp, props.fillOpacity, props.strokeOpacity])
 
   const loadLayers = useCallback(() => {
     if (!props.map) return

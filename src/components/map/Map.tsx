@@ -12,6 +12,9 @@ mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN as string
 interface IMapProps {
   mainLayersIds: string[]
   timeStamp: number
+  onClick: any
+  fillOpacity: number
+  strokeOpacity: number
 }
 
 
@@ -47,7 +50,7 @@ const Map: React.FC<IMapProps> = (props) => {
   
   return (
     <div className="map-container" ref={mapContainerRef}>
-      {map && <LayersWrapper map={map} mainLayersIds={props.mainLayersIds} timeStamp={props.timeStamp}/>}
+      {map && <LayersWrapper map={map} mainLayersIds={props.mainLayersIds} timeStamp={props.timeStamp} onClick={props.onClick} fillOpacity={props.fillOpacity} strokeOpacity={props.strokeOpacity}/>}
     </div>
   )
 
