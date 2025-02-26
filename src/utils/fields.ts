@@ -32,10 +32,5 @@ export const fields = {
         // }
     ],
     
-    // Observations: [
-    //     {
-    //         id: "air_temp_ncei",
-    //         name: "Air Temp. NCEI (C)"
-    //     }
-    // ]
+
 }

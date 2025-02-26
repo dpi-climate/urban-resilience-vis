@@ -1,17 +1,28 @@
 import { ScatterplotLayer } from "@deck.gl/layers"
+import { scaleQuantize } from 'd3-scale'
+import { colors } from '../../utils/colors'
+import { domains } from '../../utils/domains'
 
+const buildScatterLayer = (data:any) => {
 
-const buildScatterLayer = () => {
-  const MALE_COLOR = [0, 128, 255]
-  const FEMALE_COLOR = [255, 0, 128]
+  const colorScale = scaleQuantize<number[]>()
+    .domain(domains["o3"])
+    .range(colors["o3"])
 
   const scatterLayer = new ScatterplotLayer({
     id: 'scatter-plot',
-    data: 'https://raw.githubusercontent.com/visgl/deck.gl-data/master/examples/scatterplot/manhattan.json',
-    radiusScale: 10,
-    radiusMinPixels: 0.5,
-    getPosition: d => [d[0], d[1], 0],
-    getFillColor: d => (d[2] === 1 ? MALE_COLOR : FEMALE_COLOR)
+    data: data.features,
+    // radiusScale: 20,
+    radiusMinPixels: 2,
+    // getRadius: (d) => 20,
+    getPosition: d => d.geometry.coordinates,
+    getFillColor: (f): [number, number, number] => {
+      const yearKey = "T2"//String(1980 + timeStamp)
+      const value = f.properties[yearKey]
+      return value === null || isNaN(value)
+        ? [160, 160, 180]
+        : (colorScale(value) as [number, number, number])
+    },
   })
 
   return scatterLayer

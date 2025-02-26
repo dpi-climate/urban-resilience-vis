@@ -47,6 +47,8 @@ const VerticalButtonList: React.FC<VerticalButtonListProps> = (props) => {
   const handleSingleRadioClick = (group: TFieldGroup, fieldId: string) => {
     const currentValue = selectedSingle[group] || null
     const newValue = currentValue === fieldId ? null : fieldId
+
+    console.log("newValue", newValue)
     
     const updatedSelection = {
       ...selectedSingle,
@@ -161,7 +163,7 @@ const VerticalButtonList: React.FC<VerticalButtonListProps> = (props) => {
                         <Radio
                           name={`single-${group}`} // single group name
                           checked={isChecked}
-                          onChange={() => handleSingleRadioClick(group, field.id)}
+                          onClick={() => handleSingleRadioClick(group, field.id)}
                         />
                       }
                       label={field.name}
@@ -195,7 +197,7 @@ const VerticalButtonList: React.FC<VerticalButtonListProps> = (props) => {
                           <Radio
                             name={`multi-${group}-option1`}
                             checked={isChecked1}
-                            onChange={() =>
+                            onClick={() =>
                               handleOptionRadioClick(group, 'option1', field.id)
                             }
                           />
@@ -209,7 +211,7 @@ const VerticalButtonList: React.FC<VerticalButtonListProps> = (props) => {
                           <Radio
                             name={`multi-${group}-option2`}
                             checked={isChecked2}
-                            onChange={() =>
+                            onClick={() =>
                               handleOptionRadioClick(group, 'option2', field.id)
                             }
                           />
