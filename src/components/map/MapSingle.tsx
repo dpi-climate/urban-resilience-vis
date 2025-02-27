@@ -5,7 +5,7 @@ import { useRef, useState, useEffect, useCallback } from "react"
 import mapboxgl from "mapbox-gl"
 import "mapbox-gl/dist/mapbox-gl.css"
 
-import LayersWrapper from "./LayersWrapper"
+import LayersWrapper from "../layer-wrapper/LayersWrapper"
 
 mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN as string
 

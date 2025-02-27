@@ -4,7 +4,7 @@ import React, { useRef, useState, useEffect, useCallback } from "react"
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 
-import LayersWrapper from "./LayersWrapper"
+import LayersWrapper from "../layer-wrapper/LayersWrapper"
 
 interface IMapSideBySide {
   mainLayersIds: string[]

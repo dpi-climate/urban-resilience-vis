@@ -5,7 +5,7 @@ import MapboxCompare from "mapbox-gl-compare"
 import 'mapbox-gl/dist/mapbox-gl.css'
 import "mapbox-gl-compare/dist/mapbox-gl-compare.css"
 
-import LayersWrapper from "./LayersWrapper"
+import LayersWrapper from "../layer-wrapper/LayersWrapper"
 
 mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN as string
 

@@ -6,9 +6,8 @@ import Slider from '@mui/material/Slider'
 const MapSlider: React.FC<{value: number, onChange: any}> = (props) => {
   const handleChange = (_event: Event, newValue: number | number[]) => {
     if (typeof newValue === 'number') {
-      props.onChange(newValue);
+      props.onChange(newValue)
     }
-
   }
 
   return (

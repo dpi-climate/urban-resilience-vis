@@ -33,6 +33,7 @@ const buildPolygonLayer = (data: any, id: string, timeStamp: number, handleClick
 
     updateTriggers: {
       getFillColor: timeStamp,
+      getLineColor: strokeOpacity
     },
   })
 }

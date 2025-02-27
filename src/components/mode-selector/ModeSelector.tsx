@@ -14,12 +14,12 @@ import {
 import { screenModes } from '../../utils/contants'
 import { TMode, TModeOption } from '../../types-and-interfaces/types'
 
-interface ScreenModeProps {
+interface ModeSelectorProps {
   value: string
   onChange: (id: TMode) => void
 }
 
-const ScreenModes: React.FC<ScreenModeProps> = (props) => {
+const ModeSelector: React.FC<ModeSelectorProps> = (props) => {
   const [expanded, setExpanded] = useState<boolean>(false)
 
   const handleModeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,6 +38,7 @@ const ScreenModes: React.FC<ScreenModeProps> = (props) => {
         p: 2,
         width: 300,
         backgroundColor: 'white',
+        userSelect: "none"
       }}
     >
       <Typography variant="h6" sx={{ mb: 1 }}>
@@ -102,5 +103,5 @@ const ScreenModes: React.FC<ScreenModeProps> = (props) => {
   )
 }
 
-export default ScreenModes
+export default ModeSelector
 

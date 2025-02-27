@@ -13,7 +13,7 @@ import {
 import { fields } from '../../utils/fields'
 import { TField, TFieldGroup, TMode } from '../../types-and-interfaces/types'
 
-interface VerticalButtonListProps {
+interface LayerSelectorProps {
   mode: TMode
   secondLayersIds: string[]
   mainLayersIds: string[]
@@ -32,7 +32,7 @@ type TSelectedMulti = Record<
   }
 >
 
-const LayersOptions: React.FC<VerticalButtonListProps> = (props) => {
+const LayerSelector: React.FC<LayerSelectorProps> = (props) => {
     
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null)
   const [selectedSingle, setSelectedSingle] = useState<Partial<TSelectedSingle>>({} as TSelectedSingle)
@@ -123,6 +123,7 @@ const LayersOptions: React.FC<VerticalButtonListProps> = (props) => {
         p: 2,
         width: 300,
         backgroundColor: 'white',
+        userSelect: "none"
       }}
     > 
       <Typography variant="h6" sx={{ mb: 1 }}>
@@ -243,4 +244,4 @@ const LayersOptions: React.FC<VerticalButtonListProps> = (props) => {
   )
 }
 
-export default LayersOptions
+export default LayerSelector

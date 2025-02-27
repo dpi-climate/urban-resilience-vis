@@ -25,6 +25,13 @@ export const fields = {
         //     name: "T2m (C)"
         // }
     ],
+
+    // Observations: [
+    //     {
+    //         id: "ncei_air_temp",
+    //         name: "Temp NCEI (C)"
+    //     }
+    // ]
     
 
 }
