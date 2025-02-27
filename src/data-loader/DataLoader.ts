@@ -82,6 +82,6 @@ export abstract class DataLoader {
           })),
         },
         minVal: minVal, 
-        maxVal: minVal
+        maxVal: maxVal
       }
     }}

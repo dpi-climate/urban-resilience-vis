@@ -1,8 +1,8 @@
-import { useRef, useState, useEffect, useCallback } from "react"
+import { useRef, useState, useEffect } from "react"
 import { MapboxOverlay } from "@deck.gl/mapbox"
 import { Layer } from "@deck.gl/core"
 
-import buildScatterLayer from "./scatterLayer"
+// import buildScatterLayer from "./scatterLayer"
 import buildPolygonLayer from "./polygonLayer"
 
 interface ILayersWrapper {

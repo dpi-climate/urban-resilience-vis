@@ -1,10 +1,16 @@
-import { useState, useRef } from 'react'
+import React, { useRef } from 'react'
 import { LineChart } from '@mui/x-charts/LineChart'
 import IconButton from '@mui/material/IconButton'
 import CloseIcon from '@mui/icons-material/Close'
 import Draggable from 'react-draggable'
 
- const MyLineChart = (props) => {
+interface IMyLineChart {
+  visible: boolean
+  setVisible: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+
+ const MyLineChart:React.FC<IMyLineChart> = (props) => {
   // const [visible, setVisible] = useState(true)
   const dragRef = useRef<HTMLDivElement>(null!)
 

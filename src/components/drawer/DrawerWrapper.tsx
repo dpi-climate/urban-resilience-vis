@@ -8,6 +8,7 @@ import Tooltip from '@mui/material/Tooltip'
 
 import CloseIcon from '@mui/icons-material/Close'
 import LayersIcon from '@mui/icons-material/Layers'
+import MapRoundedIcon from '@mui/icons-material/MapRounded';
 
 import { Anchor } from '../../types-and-interfaces/types'
 
@@ -31,8 +32,8 @@ const Buttons: React.FC<{
         let icon
 
         switch (label) {
-          case 'Layers':
-            icon = <LayersIcon/>
+          case 'Map':
+            icon = <MapRoundedIcon/>
             break
           default:
             // icon = <HomeIcon />

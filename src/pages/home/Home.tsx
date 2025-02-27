@@ -1,29 +1,47 @@
 import "./Home.css"
 import MapWrapper from "../../components/map/MapWrapper"
 import DrawerWrapper from "../../components/drawer/DrawerWrapper"
-import VerticalButtonList from "../../components/drawer/layers-content"
-import ModeOptions from "../../components/drawer/map-mode-content"
+import LayersOptions from "../../components/drawer/LayersOptions"
+import ScreenModes from "../../components/drawer/ScreenModes"
 import { Divider } from "@mui/material"
 import { useState } from "react"
 import { TMode } from "../../types-and-interfaces/types"
 
 const Home = () => {
 
-  const [mode, setMode] = useState<TMode>("single")
-  // const [mode, setMode] = useState("side-by-side")
-  const [mainLayersIds, setMainLayersIds] = useState([])
+  // const [mode, setMode] = useState<TMode>("single")
+  // const [mode, setMode] = useState<TMode>("split")
+  const [mode, setMode] = useState<TMode>("side-by-side")
+  const [mainLayersIds, setMainLayersIds] = useState<string[]>([])
+  const [secondLayersIds, setSecondLayersIds] = useState<string[]>([])
+
+  const handleChangeMode = (m: TMode) => {
+    setMode(m)
+
+    
+    if(mode !== "single") {
+      if(m === "single") {
+        setMainLayersIds([])
+        setSecondLayersIds([])
+      }
+    } else if(m !== "single") {
+      setMainLayersIds([])
+      setSecondLayersIds([])
+    }
+
+  }
 
   const renderMenu = () => {
     return (
-      <DrawerWrapper anchor="right" buttons={["Layers"]}>
-        <ModeOptions/>
+      <DrawerWrapper anchor="right" buttons={["Map"]}>
+        <ScreenModes value={mode} onChange={ handleChangeMode }/>
         <Divider/>
-        <VerticalButtonList 
+        <LayersOptions 
           mode={mode} 
-          setMainLayersIds={setMainLayersIds} 
-          // setSecondaryLayersIds={setSecondaryLayersIds}
           mainLayersIds={mainLayersIds}
-          
+          secondLayersIds={secondLayersIds}
+          setMainLayersIds={setMainLayersIds}
+          setSecondLayersIds={setSecondLayersIds}
           />
         <Divider/>
       </DrawerWrapper>
@@ -31,7 +49,11 @@ const Home = () => {
   }
   
   const renderMapWrapper = () => {
-    return <MapWrapper mainLayersIds={mainLayersIds} mode={mode}/>
+    return <MapWrapper 
+      mainLayersIds={mainLayersIds} 
+      secondLayersIds={secondLayersIds} 
+      mode={mode}
+      />
   }
 
   const renderHeader = () => {

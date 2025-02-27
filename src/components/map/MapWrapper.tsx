@@ -1,12 +1,17 @@
-import Map from "./Map"
-import MapCompare from "./MapCompare"
-import MapSlider from "../slider/MapSlider"
 import { useState } from "react"
+
+import Map from "./MapSingle"
+import MapCompare from "./MapSplit"
+import MapSideBySide from "./MapSideBySide"
+
+import MapSlider from "../slider/MapSlider"
 import MyLineChart from "../line-chart/LineChart"
+
 import { TMode } from "../../types-and-interfaces/types"
 
 interface MapWrapperProps {
   mainLayersIds: string[]
+  secondLayersIds: string[]
   mode: TMode
 }
 
@@ -19,10 +24,34 @@ const MapWrapper: React.FC<MapWrapperProps> = (props) => {
 
   const renderMap = () => {
     if(props.mode === "single") {
-      return <Map mainLayersIds={props.mainLayersIds} timeStamp={timeStamp} onClick={setShowChart} fillOpacity={fillOpacity} strokeOpacity={strokeOpacity}/>
+      return <Map 
+              mainLayersIds={props.mainLayersIds} 
+              timeStamp={timeStamp} 
+              fillOpacity={fillOpacity} 
+              strokeOpacity={strokeOpacity}
+              onClick={setShowChart} 
+              />
     
-    } else {
-      return <MapCompare mainLayersIds={props.mainLayersIds} timeStamp={timeStamp} onClick={setShowChart} fillOpacity={fillOpacity} strokeOpacity={strokeOpacity}/>
+    } else if (props.mode === "side-by-side") {
+      return <MapSideBySide 
+                mainLayersIds={props.mainLayersIds} 
+                secondLayersIds={props.secondLayersIds}
+                timeStamp={timeStamp} 
+                fillOpacity={fillOpacity} 
+                strokeOpacity={strokeOpacity}
+                onClick={setShowChart}
+              />
+      
+    } else if (props.mode === "split") {
+      return <MapCompare 
+                mainLayersIds={props.mainLayersIds} 
+                secondLayersIds={props.secondLayersIds}
+                timeStamp={timeStamp} 
+                fillOpacity={fillOpacity} 
+                strokeOpacity={strokeOpacity}
+                onClick={setShowChart} 
+                />
+
     }
   }
 

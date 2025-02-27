@@ -2,33 +2,27 @@ export const fields = {
     Forecasts : [
         {
             id: "no2",
-            name: "NO2 (ppbv)",
-            group: "Forecast"
+            name: "NO2 (ppbv)"
         },
         {
             id: "o3",
-            name: "O3 (ppbv)",
-            group: "Forecast"
+            name: "O3 (ppbv)"
         },
         // {
         //     id: "pm10",
-        //     name: "PM10 (ppbv)",
-        //     group: "Forecast"
+        //     name: "PM10 (ppbv)"
         // },
         // {
         //     id: "pm25",
-        //     name: "PM2.5 (ug/m³)",
-        //     group: "Forecast"
+        //     name: "PM2.5 (ug/m³)"
         // },
         // {
         //     id: "co",
-        //     name: "CO (ppb)",
-        //     group: "Forecast"
+        //     name: "CO (ppb)"
         // },
         // {
         //     id: "t2",
-        //     name: "T2m (C)",
-        //     group: "Forecast"
+        //     name: "T2m (C)"
         // }
     ],
     
