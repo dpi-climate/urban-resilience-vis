@@ -37,17 +37,17 @@ import Slider from '@mui/material/Slider'
         }}
       > 
         <Typography variant="h6" sx={{ mb: 1, userSelect: "none" }}>
-          Opacity
+          Layers Opacity
         </Typography>
         <Box
           sx={{
             pl: 2,
-            mb: 2,
+            // mb: 2,
             display: 'flex',
             flexDirection: 'column',
           }}
         >
-        <Typography sx={{ mb: 1, userSelect: "none" }}>
+        <Typography sx={{ userSelect: "none" }}>
           Fill Opacity
         </Typography>
         <Slider
@@ -64,12 +64,12 @@ import Slider from '@mui/material/Slider'
         <Box
           sx={{
             pl: 2,
-            mb: 2,
+            // mb: 2,
             display: 'flex',
             flexDirection: 'column',
           }}
         >
-        <Typography sx={{ mb: 1, userSelect: "none" }}>
+        <Typography sx={{ userSelect: "none" }}>
           Boundary Opacity
         </Typography>
         <Slider

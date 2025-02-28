@@ -5,6 +5,7 @@ import DrawerWrapper from "../../components/drawer/DrawerWrapper"
 import LayerSelector from "../../components/layer-selector/LayerSelector"
 import ModeSelector from "../../components/mode-selector/ModeSelector"
 import OpacitySelector from "../../components/opacity-selector/OpacitySelector"
+import MapLegend from "../../components/map-legend/MapLegend"
 
 import { Divider } from "@mui/material"
 import { useState } from "react"
@@ -45,13 +46,28 @@ const Home = () => {
           setSecondLayersIds={setSecondLayersIds}
           />
         <Divider/>
-        <OpacitySelector
-          fillOpacity={fillOpacity}
-          strokeOpacity={strokeOpacity}
-          setFillOpacity={setFillOpacity}
-          setStrokeOpacity={setStrokeOpacity}
-          />
-        <Divider/>
+        {
+          (mainLayersIds.length > 0 || secondLayersIds.length > 0) &&
+          <>
+            <MapLegend
+              mainLayersIds={mainLayersIds}
+              secondLayersIds={secondLayersIds}
+            />
+            <Divider/>
+          </>
+        }
+        {
+          (mainLayersIds.length > 0 || secondLayersIds.length > 0) &&
+          <>
+            <OpacitySelector
+              fillOpacity={fillOpacity}
+              strokeOpacity={strokeOpacity}
+              setFillOpacity={setFillOpacity}
+              setStrokeOpacity={setStrokeOpacity}
+              />
+            <Divider/>
+          </>
+        }
       </DrawerWrapper>
     )
   }
