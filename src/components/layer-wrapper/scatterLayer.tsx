@@ -3,25 +3,36 @@ import { scaleQuantize } from 'd3-scale'
 import { colors } from '../../utils/colors'
 import { domains } from '../../utils/domains'
 
-const buildScatterLayer = (data:any) => {
+const buildScatterLayer = (data: any, id: string, timeStamp: number, handleClick: any, fillOpacity: number, strokeOpacity: number) => {
 
   const colorScale = scaleQuantize<number[]>()
-    .domain(domains["o3"])
-    .range(colors["o3"])
+    .domain(domains[id])
+    .range(colors[id])
 
   const scatterLayer = new ScatterplotLayer({
     id: 'scatter-plot',
     data: data.features,
-    // radiusScale: 20,
+
     radiusMinPixels: 2,
+    radiusMaxPixels: 2,
+    // radiusScale: 20,
+    // radiusMinPixels: 2,
     // getRadius: (d) => 20,
     getPosition: d => d.geometry.coordinates,
+    
     getFillColor: (f): [number, number, number] => {
-      const yearKey = "T2"//String(1980 + timeStamp)
-      const value = f.properties[yearKey]
+      const yearKey = String(timeStamp)
+      const value = f.properties[yearKey] || f.properties.value
       return value === null || isNaN(value)
         ? [160, 160, 180]
         : (colorScale(value) as [number, number, number])
+    },
+
+    opacity: fillOpacity,
+
+    updateTriggers: {
+      getFillColor: timeStamp,
+      getLineColor: strokeOpacity
     },
   })
 

@@ -1,6 +1,6 @@
 import { Box } from "@mui/material"
 import Slider from '@mui/material/Slider'
-
+import { datetimes } from "../../utils/datetimes"
 
 
 const MapSlider: React.FC<{value: number, onChange: any}> = (props) => {
@@ -15,15 +15,15 @@ const MapSlider: React.FC<{value: number, onChange: any}> = (props) => {
       id="my-slider"
       sx={{
         userSelect: 'none',
-        width: '60vw',
+        width: '50vw',
         maxWidth: 'calc(100vw - 40px)',
         position: 'absolute',
-        bottom: 30,
+        bottom: 20,
         left: '50%',
         transform: 'translateX(-50%)',
-        overflow: 'hidden',
+        overflow: 'visible',
         zIndex: 9999,
-        backgroundColor: "rgba(255, 255, 255, 0.9)",
+        backgroundColor: "rgba(255, 255, 255, 0.7)",
         borderRadius: 3,
         padding: 2,
         marginLeft: '20px',
@@ -31,26 +31,14 @@ const MapSlider: React.FC<{value: number, onChange: any}> = (props) => {
         boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
       }}
     >
-      <Box
-        sx={{
-          whiteSpace: 'nowrap',
-          overflow: 'hidden',
-          display: 'block',
-          textAlign: 'center',
-          fontWeight: 'bold',
-          marginBottom: 1,
-          color: "#132666"
-        }}
-      >
-        Date and Time
-      </Box>
       <Slider
         min={0}
-        max={70}
+        max={datetimes.length-1}
         step={1}
         value={props.value}
         aria-label="Small"
         valueLabelDisplay="auto"
+        valueLabelFormat={(value) => datetimes[value]}
         // onChangeCommitted={handleChange}
         onChange={handleChange}
         // sx={{
@@ -75,6 +63,19 @@ const MapSlider: React.FC<{value: number, onChange: any}> = (props) => {
           },
         }}
       />
+      {/* <Box
+        sx={{
+          whiteSpace: 'nowrap',
+          overflow: 'visible',
+          display: 'block',
+          textAlign: 'center',
+          fontWeight: 'bold',
+          // marginTop: 1,
+          color: "#132666"
+        }}
+      >
+        Date
+      </Box> */}
     </Box>
   )
 }

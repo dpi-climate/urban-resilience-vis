@@ -6,6 +6,7 @@ import 'mapbox-gl/dist/mapbox-gl.css'
 import "mapbox-gl-compare/dist/mapbox-gl-compare.css"
 
 import LayersWrapper from "../layer-wrapper/LayersWrapper"
+import { TSpatialLevel } from "../../types-and-interfaces/types"
 
 mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN as string
 
@@ -28,6 +29,9 @@ const MapCompare: React.FC<IMapCompare> = (props) => {
   const [beforeMap, setBeforeMap] = useState<mapboxgl.Map | null>(null)
   const [afterMap, setAfterMap] = useState<mapboxgl.Map | null>(null)
 
+  const [currentZoom, setCurrentZoom] = useState<number>(6)
+  const [spatialLevel, setSpatialLevel] = useState<TSpatialLevel>("pt")
+
   useEffect(() => {
       if (!mapContainerRef.current || !beforeRef.current || !afterRef.current) return
      
@@ -35,14 +39,14 @@ const MapCompare: React.FC<IMapCompare> = (props) => {
         container: beforeRef.current,
         style: "mapbox://styles/mapbox/standard-satellite", //'mapbox://styles/mapbox/light-v11',
         center: [-89.129879, 40.092361],
-          zoom: 6,
+        zoom: 6,
       });
 
       const after = new mapboxgl.Map({
-          container: afterRef.current,
-          style: "mapbox://styles/mapbox/standard-satellite",//'mapbox://styles/mapbox/dark-v11',
-          center: [-89.129879, 40.092361],
-          zoom: 6,
+        container: afterRef.current,
+        style: "mapbox://styles/mapbox/standard-satellite",//'mapbox://styles/mapbox/dark-v11',
+        center: [-89.129879, 40.092361],
+        zoom: 6,
       });
 
       setBeforeMap(before)
@@ -51,11 +55,12 @@ const MapCompare: React.FC<IMapCompare> = (props) => {
       const mapInstance = new MapboxCompare(before, after, mapContainerRef.current, {
         // Set this to enable comparing two maps by mouse movement:
         // mousemove: true
-      });
+      })
+
+      before.on("zoom", () => {
+        setCurrentZoom(before.getZoom())
+      })
       
-
-      // setMap(mapInstance)
-
       return () =>{
         mapInstance.remove()
         before.remove()
@@ -66,12 +71,65 @@ const MapCompare: React.FC<IMapCompare> = (props) => {
 
   },[])
 
+  // Update Spatial Level
+    useEffect(() => {
+      ;(async () => {
+        try {
+  
+          let newSpatialLevel: TSpatialLevel = "bg"
+  
+          if (currentZoom < 6.6) {
+            newSpatialLevel = "pt"
+          
+          } else if (currentZoom < 7.8){
+            newSpatialLevel = "co"
+          
+          } else if(currentZoom < 10) {
+  
+            newSpatialLevel = "ct"
+          
+          } else if(currentZoom < 12) {
+            newSpatialLevel = "bg"
+          }
+  
+          if(newSpatialLevel !== spatialLevel) {
+            setSpatialLevel(newSpatialLevel)
+  
+          }
+  
+        } catch (error) {
+          console.error("Error fetching polygon data:", error)
+        }
+      })()
+  
+  
+    },[currentZoom, spatialLevel])
+
   return(
     <div className="map-container" ref={mapContainerRef}>
       <div id="before-map" style={{position: 'absolute', width:"100%", height: '100%', zIndex:1}} ref={beforeRef}></div>
       <div id="after-map" style={{position: 'absolute', width:"100%", height: '100%', zIndex:1}} ref={afterRef}></div>
-      {beforeMap && <LayersWrapper map={beforeMap} mainLayersIds={props.mainLayersIds} timeStamp={props.timeStamp} onClick={props.onClick} fillOpacity={props.fillOpacity} strokeOpacity={props.strokeOpacity}/>}
-      {afterMap && <LayersWrapper map={afterMap} mainLayersIds={props.secondLayersIds} timeStamp={props.timeStamp} onClick={props.onClick} fillOpacity={props.fillOpacity} strokeOpacity={props.strokeOpacity}/>}
+      {beforeMap && 
+        <LayersWrapper 
+          map={beforeMap}
+          spatialLevel={spatialLevel}
+          fieldIds={props.mainLayersIds} 
+          timeStamp={props.timeStamp} 
+          onClick={props.onClick} 
+          fillOpacity={props.fillOpacity} 
+          strokeOpacity={props.strokeOpacity}
+          />}
+
+      {afterMap && 
+        <LayersWrapper 
+         map={afterMap} 
+         spatialLevel={spatialLevel}
+         fieldIds={props.secondLayersIds} 
+         timeStamp={props.timeStamp} 
+         onClick={props.onClick} 
+         fillOpacity={props.fillOpacity} 
+         strokeOpacity={props.strokeOpacity}
+         />}
 
     </div>
   )

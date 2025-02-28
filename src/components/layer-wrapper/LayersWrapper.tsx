@@ -2,17 +2,24 @@ import { useRef, useState, useEffect } from "react"
 import { MapboxOverlay } from "@deck.gl/mapbox"
 import { Layer } from "@deck.gl/core"
 
-// import buildScatterLayer from "./scatterLayer"
+import buildScatterLayer from "./scatterLayer"
 import buildPolygonLayer from "./polygonLayer"
+
+import { TSpatialLevel } from "../../types-and-interfaces/types"
+
+import { spatialLevels } from "../../utils/spatial-levels"
 
 interface ILayersWrapper {
   map: mapboxgl.Map
-  mainLayersIds: string[]
+  spatialLevel: TSpatialLevel
+  fieldIds: string[]
   timeStamp: number
   onClick: any
   fillOpacity: number
   strokeOpacity: number
 }
+
+// const spatialLevels = ["pt", "co", "ct", "bg"]
 
 const LayersWrapper = (props: ILayersWrapper) => {
 
@@ -20,54 +27,81 @@ const LayersWrapper = (props: ILayersWrapper) => {
   const [fetchedData, setFetchedData] = useState<Record<string, any>>({})
   const [layers, setLayers] = useState<Layer[]>([])
 
-
-  // const buildLayers = useCallback(() => {
-
-  //   ;(async () => {
-  //     const response = await fetch("./src/assets/T2_wrf_ct.geojson")
-  //     const data = await response.json()
-
-  //     const scatterLayer = buildScatterLayer(data)
-  //     const layersArr: Layer[] = [scatterLayer]
-
-  //     setLayers(layersArr)
-
-  //   })()
-  // },[])
-  
   // Fetch Data
   useEffect(() => {
     const fetchData = async () => {
       const dataMap: Record<string, any> = {}
-      for (let i = 0; i < props.mainLayersIds.length; i++) {
-        const id = props.mainLayersIds[i]
-        const response = await fetch(`./src/assets/${id}_wrf_ct.json`)
-        dataMap[id] = await response.json()
+
+      const startIndex = spatialLevels.indexOf(props.spatialLevel)
+
+      if (startIndex === -1) {
+        console.error("Invalid spatial level:", props.spatialLevel)
+        return
       }
+
+      const circularLevels = spatialLevels.slice(startIndex).concat(spatialLevels.slice(0, startIndex))
+      
+      for (const id of props.fieldIds) {
+        let fileFound = false
+
+        for (const level of circularLevels) {
+          try {
+            const response = await fetch(`./src/assets/${level}_${id}.geojson`)
+
+            if (response.ok) {
+              const jsonData = await response.json()
+              dataMap[id] = { data: jsonData, level }
+              fileFound = true
+              break
+            }
+          } catch (error) {
+            // Log error if needed, or simply try the next level
+            console.error(`Error fetching file for ${level}_${id}:`, error)
+          }
+        }
+
+        if (!fileFound) {
+          console.error(`No file found for field id ${id} with any spatial level.`)
+        }
+
+      }
+      
       setFetchedData(dataMap)
     }
 
     fetchData()
-  }, [props.mainLayersIds])
+  }, [props.fieldIds, props.spatialLevel])
 
   // Build Layers
   useEffect(() => {
-    if (props.mainLayersIds.every(id => fetchedData[id])) {
+    if (props.fieldIds.every(id => fetchedData[id])) {
+      const layersArr: Layer[] = props.fieldIds.map(id => {
 
-      
-      const layersArr: Layer[] = props.mainLayersIds.map(id => {
-        return buildPolygonLayer(
-          fetchedData[id],
-          id,
-          props.timeStamp,
-          props.onClick,
-          props.fillOpacity,
-          props.strokeOpacity
-        )
+        if(fetchedData[id].level === "pt") {
+          return buildScatterLayer(
+            fetchedData[id].data,
+            id,
+            props.timeStamp,
+            props.onClick,
+            props.fillOpacity,
+            props.strokeOpacity
+          )
+        } else {
+          console.log(fetchedData[id].data)
+          return buildPolygonLayer(
+            fetchedData[id].data,
+            id,
+            props.timeStamp,
+            props.onClick,
+            props.fillOpacity,
+            props.strokeOpacity
+          )
+        }
       })
+
       setLayers(layersArr)
     }
-  }, [fetchedData, props.mainLayersIds, props.timeStamp, props.onClick, props.fillOpacity, props.strokeOpacity])
+  }, [fetchedData, props.fieldIds, props.timeStamp, props.onClick, props.fillOpacity, props.strokeOpacity, props.spatialLevel])
 
   // Load Layers
   useEffect(() => {

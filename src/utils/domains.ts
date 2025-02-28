@@ -1,10 +1,13 @@
 export const domains: Record<string, number[]> = {
     no2: [0, 50],
-    // o3: [0, 80],
     o3: [-30, 0],
-    // o3: [285, 300],
-    pm10: [0, 200],
-    pm25: [0, 50],
-    co: [0, 500],
-    t2: [0, 40]
+    p25: [0, 50],
+    co: [0, 1],
+    t2: [5, 35],
+    rh2: [0, 100],
+    rpl_theme1: [0,1],
+    rpl_theme2: [0,1],
+    rpl_theme3: [0,1],
+    rpl_theme4: [0,1],
+    rpl_themes: [0,1],
 }

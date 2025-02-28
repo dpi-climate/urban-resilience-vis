@@ -3,46 +3,63 @@ import { IFields } from "../types-and-interfaces/types"
 export const fields: IFields = {
     Forecasts : [
         {
-            id: "no2",
-            name: "NO2 (ppbv)"
-        },
-        {
-            id: "o3",
-            name: "O3 (ppbv)"
-        },
-        {
-            id: "pm10",
-            name: "PM10 (ppbv)"
-        },
-        {
-            id: "pm25",
-            name: "PM2.5 (ug/m³)"
+            id: "t2",
+            name: "Temperature (C)"
         },
         {
             id: "co",
-            name: "CO (ppb)"
+            name: "CO"
         },
         {
-            id: "t2",
-            name: "T2m (C)"
-        }
+            id: "p25",
+            name: "PM2.5 (ug/m³)"
+        },
+        {
+            id: "rh2",
+            name: "Relative Humidity 2m (%)"
+        },
+
     ],
 
-    Observations: [
-        {
-            id: "ncei_air_temp",
-            name: "Temp NCEI (C)"
-        }
-    ],
+    // Observations: [
+    //     {
+    //         id: "ncei_air_temp",
+    //         name: "Temp NCEI (C)"
+    //     }
+    // ],
 
-    "Fuel Stations": [
+    // "Fuel Stations": [
+    //     {
+    //         id: "ev",
+    //         name: "Electric"
+    //     },
+    //     {
+    //         id: "e85",
+    //         name: "E85 Ethanol"
+    //     },
+    // ],
+
+    Sociodemographics: [
         {
-            id: "ev",
-            name: "Electric"
+            id: "rpl_theme1",
+            name: "Socioeconomic Status"
         },
         {
-            id: "e85",
-            name: "E85 Ethanol"
+            id: "rpl_theme2",
+            name: "Household Characteristics"
         },
+        {
+            id: "rpl_theme3",
+            name: "Racial and Ethnic Minority Status"
+        },
+        {
+            id: "rpl_theme4",
+            name: "Housing Type/Transportation"
+        },
+        {
+            id: "rpl_themes",
+            name: "Overall Summary"
+        },
+
     ]
 }

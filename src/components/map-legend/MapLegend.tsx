@@ -42,7 +42,6 @@ const MapLegend = (props:IMapLegend) => {
   }
 
   const merdedArr = mergeIds()
-  console.log(merdedArr)
 
   return(
     <Box
@@ -61,15 +60,21 @@ const MapLegend = (props:IMapLegend) => {
       <Box sx={{ width: '100%' }}>
         {merdedArr.map((obj: MergedID, index: number) => {
           const field = findFieldById(obj.id)
-          const side = obj.inMain
-            ? obj.inSecond
-              ? "- on the left and right"
-              : "- on the left"
-            : obj.inSecond
-              ? "- on the right"
-              : ""
+
+          let label = field?.name
           
-          const label = `${field?.name} ${side}`
+          if(props.secondLayersIds.length > 0) {
+            
+            const side = obj.inMain
+              ? obj.inSecond
+                ? "- on the left and right"
+                : "- on the left"
+              : obj.inSecond
+                ? "- on the right"
+                : ""
+            
+            label = `${field?.name} ${side}`
+          }
 
           return (
             <ColorBar

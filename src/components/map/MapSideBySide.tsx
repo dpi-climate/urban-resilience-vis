@@ -5,6 +5,7 @@ import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 
 import LayersWrapper from "../layer-wrapper/LayersWrapper"
+import { TSpatialLevel } from "../../types-and-interfaces/types"
 
 interface IMapSideBySide {
   mainLayersIds: string[]
@@ -29,6 +30,8 @@ const MapSideBySide: React.FC<IMapSideBySide> = (props) => {
 
   const [center, setCenter] = useState<mapboxgl.LngLat>(new mapboxgl.LngLat(0, 0))
   const [zoom, setZoom] = useState<number>(0)
+
+  const [spatialLevel, setSpatialLevel] = useState<TSpatialLevel>("pt")
 
   const onMove = useCallback((center:any, zoom:number) => {setCenter(center); setZoom(zoom)}, [])
 
@@ -135,12 +138,65 @@ useEffect(() => {
 
 },[beforeMap, afterMap, activeMap, center, zoom])
 
+// Update Spatial Level
+  useEffect(() => {
+    ;(async () => {
+      try {
+
+        let newSpatialLevel: TSpatialLevel = "bg"
+
+        if (zoom < 6.6) {
+          newSpatialLevel = "pt"
+        
+        } else if (zoom < 7.8){
+          newSpatialLevel = "co"
+        
+        } else if(zoom < 10) {
+
+          newSpatialLevel = "ct"
+        
+        } else if(zoom < 12) {
+          newSpatialLevel = "bg"
+        }
+
+        if(newSpatialLevel !== spatialLevel) {
+          setSpatialLevel(newSpatialLevel)
+
+        }
+
+      } catch (error) {
+        console.error("Error fetching polygon data:", error)
+      }
+    })()
+
+
+  },[zoom, spatialLevel])
+
 return(
   <div className="map-container" ref={mapContainerRef}>
     <div id="before-map" style={{position: 'absolute', width:"50%", height: '100%', zIndex:1}} ref={beforeRef}></div>
     <div id="after-map" style={{position: 'absolute', left:"50%", width:"50%", height: '100%', zIndex:1}} ref={afterRef}></div>
-    {beforeMap && <LayersWrapper map={beforeMap} mainLayersIds={props.mainLayersIds} timeStamp={props.timeStamp} onClick={props.onClick} fillOpacity={props.fillOpacity} strokeOpacity={props.strokeOpacity}/>}
-    {afterMap && <LayersWrapper map={afterMap} mainLayersIds={props.secondLayersIds} timeStamp={props.timeStamp} onClick={props.onClick} fillOpacity={props.fillOpacity} strokeOpacity={props.strokeOpacity}/>}
+    {beforeMap && 
+      <LayersWrapper 
+      map={beforeMap}
+      spatialLevel={spatialLevel}
+      fieldIds={props.mainLayersIds} 
+      timeStamp={props.timeStamp} 
+      onClick={props.onClick} 
+      fillOpacity={props.fillOpacity} 
+      strokeOpacity={props.strokeOpacity}
+      />}
+
+    {afterMap && 
+    <LayersWrapper 
+    map={afterMap} 
+    spatialLevel={spatialLevel}
+    fieldIds={props.secondLayersIds} 
+    timeStamp={props.timeStamp} 
+    onClick={props.onClick} 
+    fillOpacity={props.fillOpacity} 
+    strokeOpacity={props.strokeOpacity}
+    />}
 
   </div>
 )

@@ -19,7 +19,7 @@ const buildPolygonLayer = (data: any, id: string, timeStamp: number, handleClick
 
     getFillColor: (f): [number, number, number] => {
       const yearKey = String(1980 + timeStamp)
-      const value = f.properties[yearKey]
+      const value = f.properties[yearKey] || f.properties.value
       return value === null || isNaN(value)
         ? [160, 160, 180]
         : (colorScale(value) as [number, number, number])
