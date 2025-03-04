@@ -6,14 +6,14 @@ export const fields: IFields = {
             id: "t2",
             name: "Temperature (C)"
         },
-        {
-            id: "co",
-            name: "CO"
-        },
-        {
-            id: "p25",
-            name: "PM2.5 (ug/m³)"
-        },
+        // {
+        //     id: "co",
+        //     name: "CO"
+        // },
+        // {
+        //     id: "p25",
+        //     name: "PM2.5 (ug/m³)"
+        // },
         {
             id: "rh2",
             name: "Relative Humidity 2m (%)"

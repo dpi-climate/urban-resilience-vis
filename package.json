@@ -24,6 +24,7 @@
     "events": "^3.3.0",
     "mapbox-gl": "^3.10.0",
     "mapbox-gl-compare": "^0.4.1",
+    "papaparse": "^5.5.2",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.9",
     "react-dom": "^18.3.1",
@@ -32,6 +33,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",
+    "@types/papaparse": "^5.3.15",
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
     "@vitejs/plugin-react": "^4.3.4",

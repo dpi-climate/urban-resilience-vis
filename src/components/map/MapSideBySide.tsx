@@ -11,7 +11,8 @@ interface IMapSideBySide {
   mainLayersIds: string[]
   secondLayersIds: string[]
   timeStamp: number
-  onClick: any
+  setLocalData: any
+  handleClick: any
   fillOpacity: number
   strokeOpacity: number
 
@@ -161,6 +162,7 @@ useEffect(() => {
 
         if(newSpatialLevel !== spatialLevel) {
           setSpatialLevel(newSpatialLevel)
+          props.setLocalData({})
 
         }
 
@@ -182,7 +184,7 @@ return(
       spatialLevel={spatialLevel}
       fieldIds={props.mainLayersIds} 
       timeStamp={props.timeStamp} 
-      onClick={props.onClick} 
+      handleClick={props.handleClick} 
       fillOpacity={props.fillOpacity} 
       strokeOpacity={props.strokeOpacity}
       />}
@@ -193,7 +195,7 @@ return(
     spatialLevel={spatialLevel}
     fieldIds={props.secondLayersIds} 
     timeStamp={props.timeStamp} 
-    onClick={props.onClick} 
+    handleClick={props.handleClick} 
     fillOpacity={props.fillOpacity} 
     strokeOpacity={props.strokeOpacity}
     />}

@@ -7,6 +7,15 @@
     /* z-index: 1; */
   }
 
+  .mapboxgl-ctrl-attrib-inner {
+    /* pointer-events: none; */
+    user-select: none;
+  }
+
+/* .mapboxgl-ctrl-attrib {
+  pointer-events: none;
+} */
+
 /* .deckgl-overlay {
   z-index: 1 !important;
 } */

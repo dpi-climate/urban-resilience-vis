@@ -12,11 +12,14 @@ const buildScatterLayer = (data: any, id: string, timeStamp: number, handleClick
   const scatterLayer = new ScatterplotLayer({
     id: 'scatter-plot',
     data: data.features,
-
-    radiusMinPixels: 2,
-    radiusMaxPixels: 2,
-    // radiusScale: 20,
+    getRadius: 10,
+      radiusScale: 0.001,
+      radiusMinPixels: 5,
+      radiusMaxPixels: 1000,
     // radiusMinPixels: 2,
+    // radiusMaxPixels: 2,
+    // radiusScale: 20,
+
     // getRadius: (d) => 20,
     getPosition: d => d.geometry.coordinates,
     
@@ -29,10 +32,18 @@ const buildScatterLayer = (data: any, id: string, timeStamp: number, handleClick
     },
 
     opacity: fillOpacity,
+    pickable: true,
+
+    onClick: d => {
+      // console.log(d)
+      // console.log(d.object.properties)
+      handleClick(d.object.properties)
+
+    },
 
     updateTriggers: {
       getFillColor: timeStamp,
-      getLineColor: strokeOpacity
+      getLineColor: 0//strokeOpacity
     },
   })
 

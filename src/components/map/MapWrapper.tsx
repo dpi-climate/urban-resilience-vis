@@ -21,6 +21,20 @@ const MapWrapper: React.FC<MapWrapperProps> = (props) => {
 
   const [timeStamp, setTimeStamp] = useState(0)
   const [showChart, setShowChart] = useState(false)
+  const [localData, setLocalData] = useState({})
+  const [selectedFeature, setSelectedFeature] = useState(null)
+
+  const updateLineChart = (data: any) => {
+    // Temporal data
+    const filteredData = Object.fromEntries(
+      Object.entries(data).filter(([key, ]) => !Number.isNaN(Number(key)))
+    )
+
+    if(Object.keys(filteredData).length > 0) {
+      setLocalData(filteredData)
+      setShowChart(true)
+    }
+  }
 
   const renderMap = () => {
     if(props.mode === "single") {
@@ -29,7 +43,10 @@ const MapWrapper: React.FC<MapWrapperProps> = (props) => {
               timeStamp={timeStamp} 
               fillOpacity={props.fillOpacity} 
               strokeOpacity={props.strokeOpacity}
-              onClick={setShowChart} 
+              setLocalData={setLocalData}
+              handleClick={updateLineChart}
+              selectedFeature={selectedFeature}
+              setSelectedFeature={setSelectedFeature}
               />
     
     } else if (props.mode === "side-by-side") {
@@ -39,7 +56,8 @@ const MapWrapper: React.FC<MapWrapperProps> = (props) => {
                 timeStamp={timeStamp} 
                 fillOpacity={props.fillOpacity} 
                 strokeOpacity={props.strokeOpacity}
-                onClick={setShowChart}
+                setLocalData={setLocalData}
+                handleClick={updateLineChart}
               />
       
     } else if (props.mode === "split") {
@@ -49,14 +67,20 @@ const MapWrapper: React.FC<MapWrapperProps> = (props) => {
                 timeStamp={timeStamp} 
                 fillOpacity={props.fillOpacity} 
                 strokeOpacity={props.strokeOpacity}
-                onClick={setShowChart} 
+                setLocalData={setLocalData}
+                handleClick={updateLineChart} 
                 />
     }
   }
 
   return (
     <>
-      <MyLineChart visible={showChart} setVisible={setShowChart}/>
+      <MyLineChart 
+        data={localData}
+        visible={showChart}
+        setVisible={setShowChart}
+        timeStamp={timeStamp}
+        />
       
       { renderMap() }
             

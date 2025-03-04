@@ -14,12 +14,12 @@ interface ILayersWrapper {
   spatialLevel: TSpatialLevel
   fieldIds: string[]
   timeStamp: number
-  onClick: any
+  handleClick: any
   fillOpacity: number
   strokeOpacity: number
+  selectedFeature: any
+  setSelectedFeature: any
 }
-
-// const spatialLevels = ["pt", "co", "ct", "bg"]
 
 const LayersWrapper = (props: ILayersWrapper) => {
 
@@ -63,7 +63,6 @@ const LayersWrapper = (props: ILayersWrapper) => {
         if (!fileFound) {
           console.error(`No file found for field id ${id} with any spatial level.`)
         }
-
       }
       
       setFetchedData(dataMap)
@@ -82,26 +81,27 @@ const LayersWrapper = (props: ILayersWrapper) => {
             fetchedData[id].data,
             id,
             props.timeStamp,
-            props.onClick,
+            props.handleClick,
             props.fillOpacity,
             props.strokeOpacity
           )
         } else {
-          console.log(fetchedData[id].data)
           return buildPolygonLayer(
             fetchedData[id].data,
             id,
             props.timeStamp,
-            props.onClick,
+            props.handleClick,
             props.fillOpacity,
-            props.strokeOpacity
+            props.strokeOpacity,
+            props.selectedFeature,
+            props.setSelectedFeature
           )
         }
       })
 
       setLayers(layersArr)
     }
-  }, [fetchedData, props.fieldIds, props.timeStamp, props.onClick, props.fillOpacity, props.strokeOpacity, props.spatialLevel])
+  }, [fetchedData, props.fieldIds, props.timeStamp, props.handleClick, props.fillOpacity, props.strokeOpacity, props.spatialLevel])
 
   // Load Layers
   useEffect(() => {

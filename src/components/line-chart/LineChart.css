@@ -1,0 +1,9 @@
+.MuiCharts-axis-x .MuiCharts-axisTickText {
+    display: none;
+  }
+ 
+.MuiChartsAxis-directionX > .MuiChartsAxis-tickContainer {
+    display: none;
+
+}
+

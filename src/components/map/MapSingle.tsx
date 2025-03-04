@@ -14,9 +14,12 @@ mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN as string
 interface IMapProps {
   fieldIds: string[]
   timeStamp: number
-  onClick: any
+  setLocalData: any
+  handleClick: any
   fillOpacity: number
   strokeOpacity: number
+  selectedFeature: any
+  setSelectedFeature: any
 }
 
 
@@ -72,6 +75,7 @@ const Map: React.FC<IMapProps> = (props) => {
 
         if(newSpatialLevel !== spatialLevel) {
           setSpatialLevel(newSpatialLevel)
+          props.setLocalData({})
 
         }
 
@@ -92,9 +96,12 @@ const Map: React.FC<IMapProps> = (props) => {
           spatialLevel={spatialLevel}
           fieldIds={props.fieldIds} 
           timeStamp={props.timeStamp}
-          onClick={props.onClick} 
           fillOpacity={props.fillOpacity} 
           strokeOpacity={props.strokeOpacity}
+          selectedFeature={props.selectedFeature}
+          setSelectedFeature={props.setSelectedFeature}
+          handleClick={props.handleClick} 
+
         />}
     </div>
   )
