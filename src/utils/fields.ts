@@ -35,13 +35,14 @@ export const fields: IFields = {
 
     ],
 
-    // Observations: [
-    //     {
-    //         id: "ncei_air_temp",
-    //         name: "Temp NCEI (C)",
-    //         radioId: "radio2"
-    //     }
-    // ],
+    Observations: [
+        {
+            id: "ncei_air_temp",
+            name: "Temp NCEI (C)",
+            radioId: "stations",
+            layerType: "scatter",
+        }
+    ],
 
     // "Fuel Stations": [
     //     {
