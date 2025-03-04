@@ -15,14 +15,14 @@ export const fields: IFields = {
             layerType: "multiple",
         },
         {
-            id: "wind",
-            name: "Wind Speed (m/s)",
+            id: "rain",
+            name: "Rainfall 1h (mm)",
             radioId: "radio1",
             layerType: "multiple",
         },
         {
-            id: "rain",
-            name: "Rainfall 1h (mm)",
+            id: "wind",
+            name: "Wind Speed (m/s)",
             radioId: "radio1",
             layerType: "multiple",
         },
