@@ -49,7 +49,7 @@ const MyLineChart: React.FC<IMyLineChart> = (props) => {
         style={{
           position: 'absolute',
           zIndex: 999,
-          backgroundColor: 'white',
+          backgroundColor: 'rgba(255, 255, 255, 0.9)',
           padding: '16px',
           borderRadius: '8px',
           boxShadow: '0 2px 10px rgba(0, 0, 0, 0.2)',

@@ -1,3 +1,4 @@
+
 const rainbow = [
   [35, 23, 27], [39, 26, 40], [43, 28, 51], [47, 30, 63], [50, 32, 74], [54, 35, 84], [57, 37, 95], [59, 39, 104],
   [62, 42, 114], [64, 44, 123], [66, 47, 131], [68, 49, 139], [69, 52, 147], [70, 54, 155], [72, 57, 162], [73, 60, 168],
@@ -33,35 +34,37 @@ const rainbow = [
   [148, 12, 0], [147, 12, 0], [146, 12, 0], [145, 11, 0], [145, 12, 0], [144, 12, 0], [144, 12, 0], [144, 12, 0]
 ]
 
-const ygb = [
-  [255,255,217],
-  [237,248,177],
-  [199,233,180],
-  [127,205,187],
-  [65,182,196],
-  [29,145,192],
-  [34,94,168],
-  [37,52,148],
-  [8,29,88],
-  [8,29,88],
-  [8,29,88]
-]
+// const ygb = [
+//   [255,255,217],
+//   [237,248,177],
+//   [199,233,180],
+//   [127,205,187],
+//   [65,182,196],
+//   [29,145,192],
+//   [34,94,168],
+//   [37,52,148],
+//   [8,29,88],
+//   [8,29,88],
+//   [8,29,88]
+// ]
 
 
 
-export const colors: Record<string, number[][]> = {
+export const colors: Record<string, number[][] | string> = {
     no2: rainbow,
     o3: rainbow,
     p25: rainbow,
     co: rainbow,
     t2: rainbow,
     rh2: rainbow,
+    wind: rainbow,
+    rain: rainbow,
 
     air_temp_ncei: rainbow,
 
-    rpl_theme1: ygb,
-    rpl_theme2: ygb,
-    rpl_theme3: ygb,
-    rpl_theme4: ygb,
-    rpl_themes: ygb,
+    rpl_theme1: "interpolateBlues",
+    rpl_theme2: "interpolateBlues",
+    rpl_theme3: "interpolateBlues",
+    rpl_theme4: "interpolateBlues",
+    rpl_themes: "interpolateBlues",
 }

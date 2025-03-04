@@ -1,13 +1,18 @@
 import { ScatterplotLayer } from "@deck.gl/layers"
-import { scaleQuantize } from 'd3-scale'
+import * as d3 from "d3"
 import { colors } from '../../utils/colors'
 import { domains } from '../../utils/domains'
 
 const buildScatterLayer = (data: any, id: string, timeStamp: number, handleClick: any, fillOpacity: number) => {
 
-  const colorScale = scaleQuantize<number[]>()
-    .domain(domains[id])
-    .range(colors[id])
+  const colorScale = typeof(colors[id]) === "string"      
+      ? d3.scaleSequential()
+          .domain([0, 1])
+          .interpolator((d3 as any)[colors[id]])
+  
+      : d3.scaleQuantize<number[]>()
+          .domain(domains[id])
+          .range(colors[id])
 
   const scatterLayer = new ScatterplotLayer({
     id: 'scatter-plot',
@@ -24,11 +29,20 @@ const buildScatterLayer = (data: any, id: string, timeStamp: number, handleClick
     getPosition: d => d.geometry.coordinates,
     
     getFillColor: (f): [number, number, number] => {
-      const yearKey = String(timeStamp)
-      const value = f.properties[yearKey] || f.properties.value
-      return value === null || isNaN(value)
-        ? [160, 160, 180]
-        : (colorScale(value) as [number, number, number])
+      const yearKey = String(timeStamp);
+      const value = Number(f.properties[yearKey] ?? f.properties.value)
+
+      if (value === null || isNaN(value)) {
+        return [160, 160, 180]
+      
+      } else if (typeof colors[id] === "string") {
+        const hexColor = (colorScale as d3.ScaleSequential<string>)(value) as string
+        const { r, g, b } = d3.rgb(hexColor)
+        return [r, g, b]
+      
+      } else {
+        return colorScale(value) as [number, number, number]
+      }
     },
 
     opacity: fillOpacity,

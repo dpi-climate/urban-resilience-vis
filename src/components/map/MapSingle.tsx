@@ -38,7 +38,7 @@ const Map: React.FC<IMapProps> = (props) => {
       style: "mapbox://styles/mapbox/standard-satellite",//"mapbox://styles/carolvfs/clxnzay8z02qh01qkhftqheen" ,
       center: [-89.129879, 40.092361],
       zoom: 6,
-      minZoom: 6
+      // minZoom: 6
     })
 
     mapInstance.on("zoom", () => {

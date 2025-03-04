@@ -5,6 +5,8 @@ export const domains: Record<string, number[]> = {
     co: [0, 1],
     t2: [5, 35],
     rh2: [0, 100],
+    wind: [0, 10],
+    rain: [0, 50],
     rpl_theme1: [0,1],
     rpl_theme2: [0,1],
     rpl_theme3: [0,1],

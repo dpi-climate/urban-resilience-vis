@@ -33,6 +33,7 @@ const MapLegend = (props:IMapLegend) => {
     props.secondLayersIds.forEach(id => {
       if (!mergedMap[id]) {
         mergedMap[id] = { id, inMain: false, inSecond: true }
+      
       } else {
         mergedMap[id].inSecond = true
       }
@@ -61,30 +62,35 @@ const MapLegend = (props:IMapLegend) => {
         {merdedArr.map((obj: MergedID, index: number) => {
           const field = findFieldById(obj.id)
 
-          let label = field?.name
+          if(field?.layerType === "windLayer") {
+            return null
           
-          if(props.secondLayersIds.length > 0) {
+          } else {
+            let label = field?.name
             
-            const side = obj.inMain
-              ? obj.inSecond
-                ? "- on the left and right"
-                : "- on the left"
-              : obj.inSecond
-                ? "- on the right"
-                : ""
-            
-            label = `${field?.name} ${side}`
+            if(props.secondLayersIds.length > 0) {
+              
+              const side = obj.inMain
+                ? obj.inSecond
+                  ? "- left/right"
+                  : "- left"
+                : obj.inSecond
+                  ? "- right"
+                  : ""
+              
+              label = `${field?.name} ${side}`
+            }
+  
+            return (
+              <ColorBar
+                key={`color-bar-${index}`}
+                colorScheme={colors[obj.id]}
+                legId={`color-bar-${index}`}
+                domain={domains[obj.id]}
+                label={label}
+              />
+            )
           }
-
-          return (
-            <ColorBar
-              key={`color-bar-${index}`}
-              colorScheme={colors[obj.id]}
-              legId={`color-bar-${index}`}
-              domain={domains[obj.id]}
-              label={label}
-            />
-          )
         })}
       </Box>
     </Box>

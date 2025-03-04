@@ -1,6 +1,7 @@
 export type Anchor = 'top' | 'left' | 'bottom' | 'right'
+export type LayerType = "scatter" | "icon" | "grid" | "polygon"
 export type TFieldGroup = "Forecasts" | "Observations"
-export type TField = { id: string, name: string, radioId: string }
+export type TField = { id: string, name: string, radioId: string, zoomSensitive?: boolean, layerType?: LayerType }
 export type TMode = "single" | "side-by-side" | "split"
 export type TModeOption = { id: TMode, name: string }
 export type TSpatialLevel = "bg" | "ct" |"co" | "pt"

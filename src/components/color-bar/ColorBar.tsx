@@ -18,7 +18,7 @@ const ColorBar: React.FC<IColorBar> = (props) => {
   const margin = { top: 10, bottom: 10, left: 10, right: 10 }
   let direction = "h"
 
-  const width   = direction === 'v' ? 50                               : 250 - margin.left - margin.right
+  const width   = direction === 'v' ? 50                               : 330 - margin.left - margin.right
   const height  = direction === 'v' ? 200 - margin.top - margin.bottom : 80  - margin.top - margin.bottom
 
   const width_leg   = direction === 'v' ? 15  : 155
@@ -242,7 +242,7 @@ const ColorBar: React.FC<IColorBar> = (props) => {
     updateAxis()
     addColors()
     updateRect()
-    updateLabel()
+    updateLabel()    
 
   }, [props.domain, props.colorScheme, props.label, legId, direction])
 
