@@ -15,6 +15,7 @@ interface IMyLineChart {
   visible: boolean
   timeStamp: number
   setVisible: React.Dispatch<React.SetStateAction<boolean>>
+  setSelectedFeature: React.Dispatch<React.SetStateAction<string | null>>
   
 }
 
@@ -32,6 +33,7 @@ const MyLineChart: React.FC<IMyLineChart> = (props) => {
       setXData([])
       setYData([])
       props.setVisible(false)
+      props.setSelectedFeature(null)
     }
 
   },[props.data])
@@ -74,7 +76,7 @@ const MyLineChart: React.FC<IMyLineChart> = (props) => {
         />
 
         <IconButton
-          onClick={() => props.setVisible(false)}
+          onClick={() => {props.setVisible(false); props.setSelectedFeature(null)}}
           size="small"
           sx={{
             position: 'absolute',

@@ -18,6 +18,7 @@ interface IMapCompare {
   handleClick: any
   fillOpacity: number
   strokeOpacity: number
+  selectedFeature: any
 
 }
 
@@ -120,6 +121,7 @@ const MapCompare: React.FC<IMapCompare> = (props) => {
           handleClick={props.handleClick} 
           fillOpacity={props.fillOpacity} 
           strokeOpacity={props.strokeOpacity}
+          selectedFeature={props.selectedFeature}
           />}
 
       {afterMap && 
@@ -131,6 +133,7 @@ const MapCompare: React.FC<IMapCompare> = (props) => {
          handleClick={props.handleClick} 
          fillOpacity={props.fillOpacity} 
          strokeOpacity={props.strokeOpacity}
+         selectedFeature={props.selectedFeature}
          />}
 
     </div>

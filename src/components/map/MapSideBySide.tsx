@@ -15,7 +15,7 @@ interface IMapSideBySide {
   handleClick: any
   fillOpacity: number
   strokeOpacity: number
-
+  selectedFeature: any
 }
 
 const MapSideBySide: React.FC<IMapSideBySide> = (props) => {
@@ -127,13 +127,13 @@ useEffect(() => {
   if(!beforeMap || !afterMap) return
 
   if(activeMap === 'before') {
-    console.log("after is flying")
+    // console.log("after is flying")
     afterMap.jumpTo({ center, zoom })
 
   } else
 
   if(activeMap === 'after') {
-    console.log("before is flying")
+    // console.log("before is flying")
     beforeMap.jumpTo({ center, zoom })
   }
 
@@ -187,18 +187,20 @@ return(
       handleClick={props.handleClick} 
       fillOpacity={props.fillOpacity} 
       strokeOpacity={props.strokeOpacity}
+      selectedFeature={props.selectedFeature}
       />}
 
-    {afterMap && 
-    <LayersWrapper 
-    map={afterMap} 
-    spatialLevel={spatialLevel}
-    fieldIds={props.secondLayersIds} 
-    timeStamp={props.timeStamp} 
-    handleClick={props.handleClick} 
-    fillOpacity={props.fillOpacity} 
-    strokeOpacity={props.strokeOpacity}
-    />}
+      {afterMap && 
+        <LayersWrapper 
+        map={afterMap} 
+        spatialLevel={spatialLevel}
+        fieldIds={props.secondLayersIds} 
+        timeStamp={props.timeStamp} 
+        handleClick={props.handleClick} 
+        fillOpacity={props.fillOpacity} 
+        strokeOpacity={props.strokeOpacity}
+        selectedFeature={props.selectedFeature}
+        />}
 
   </div>
 )

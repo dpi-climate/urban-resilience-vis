@@ -73,24 +73,6 @@ const ColorBar: React.FC<IColorBar> = (props) => {
     const axisGroup = d3.select(axisGroupRef.current)
 
     const updateAxis = () => {
-      const calculateTickIndices = (length: number, numberOfTicks: number): number[] => {
-        if (length === 0) return [];
-    
-        const step = (length - 1) / (numberOfTicks - 1);
-        const tickIndices: number[] = [];
-    
-        for (let i = 0; i < numberOfTicks; i++) {
-          tickIndices.push(Math.round(i * step));
-        }
-    
-        // Ensure the last index is included
-        if (tickIndices[tickIndices.length - 1] !== length - 1) {
-          tickIndices[tickIndices.length - 1] = length - 1;
-        }
-    
-        // Remove any duplicate indices (in case of rounding)
-        return Array.from(new Set(tickIndices));
-      };
 
       if(!svgRef.current  || !linearGradientRef.current || !axisGroupRef.current || !yScaleRef.current || !xScaleRef.current) return 
 
@@ -98,35 +80,15 @@ const ColorBar: React.FC<IColorBar> = (props) => {
       const numTicks = 5
 
       xScaleRef.current.domain(props.domain)
-      // let values = xScaleRef.current.ticks(numTicks)//.concat([props.domain[0], props.domain[props.domain.length - 1]]);
-      // values = [...new Set(values)];
-      
-      // axis = d3.axisTop(xScaleRef.current)
-        // .tickValues(values)
-      
       
       axis = d3.axisTop(xScaleRef.current)
 
-
-      // if(props.domain.length == 2) {
-        xScaleRef.current.domain(props.domain)
-        let values = xScaleRef.current.ticks(numTicks)//.concat([props.domain[0], props.domain[props.domain.length - 1]]);
-        values = [...new Set(values)];
-        
-        axis = d3.axisTop(xScaleRef.current)
-          .tickValues(values)
-
-      // } else {
-      //   xScaleRef.current.domain([0, props.domain.length - 1])
-        
-      //   let values = calculateTickIndices(props.domain.length, numTicks)
-
-      //   axis = d3.axisTop(xScaleRef.current)
-      //     .tickValues(values)
-      //     .tickFormat((i: any) => props.domain[i as number])
-
-      // }
-
+      xScaleRef.current.domain(props.domain)
+      let values = xScaleRef.current.ticks(numTicks)//.concat([props.domain[0], props.domain[props.domain.length - 1]]);
+      values = [...new Set(values)];
+      
+      axis = d3.axisTop(xScaleRef.current)
+        .tickValues(values)
 
       axisGroup.call(axis)
     }
@@ -185,18 +147,18 @@ const ColorBar: React.FC<IColorBar> = (props) => {
           ?.selectAll(`#stop-${legId}`)
           .data(data);
     
-        color?.exit().remove();
+        color?.exit().remove()
     
         color
           ?.attr("offset", (d: GradientStop) => d.offset)
-          ?.attr("stop-color", (d: GradientStop) => d.color);
+          ?.attr("stop-color", (d: GradientStop) => d.color)
     
         color?.enter()
           .append("stop")
           .attr("id", `stop-${legId}`)
           .attr("offset", (d: GradientStop) => d.offset)
           .attr("stop-color", (d: GradientStop) => d.color)
-          .attr("stop-opacity", 1);
+          .attr("stop-opacity", 1)
           
       } else {
 

@@ -19,7 +19,6 @@ interface IMapProps {
   fillOpacity: number
   strokeOpacity: number
   selectedFeature: any
-  setSelectedFeature: any
 }
 
 
@@ -99,7 +98,6 @@ const Map: React.FC<IMapProps> = (props) => {
           fillOpacity={props.fillOpacity} 
           strokeOpacity={props.strokeOpacity}
           selectedFeature={props.selectedFeature}
-          setSelectedFeature={props.setSelectedFeature}
           handleClick={props.handleClick} 
 
         />}

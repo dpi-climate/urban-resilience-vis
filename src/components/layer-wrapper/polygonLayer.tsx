@@ -12,7 +12,6 @@ const buildPolygonLayer = (
     fillOpacity: number, 
     strokeOpacity: number,
     selectedFeature: any,
-    setSelectedFeature: any
   ) => {
   
   const colorScale = scaleQuantize<number[]>()
@@ -54,17 +53,24 @@ const buildPolygonLayer = (
     },
     opacity: fillOpacity,
     
-    getLineColor: () => {
-      return [0, 0, 0, 150 * strokeOpacity]
+    getLineColor: (f) => {
+      return String(selectedFeature) === String(f.properties.UNITID) ? [52, 235, 36, 255] : [0, 0, 0, 150 * strokeOpacity]
     },
-    lineWidthMinPixels: 0.8,
+    getLineWidth: (f) => {
+      return String(selectedFeature) === String(f.properties.UNITID) ? 5.0 : 0.8
+    },
+
+    lineWidthMinPixels: 0,
+    lineWidthUnits: 'pixels',
+
     autoHighlight: true, 
-    onClick: (d) => { handleClick(d.object.properties) },
+    onClick: (d) => { handleClick(d.object.properties)},
     // onHover: updateTooltip,//(d) => console.log(d.object.properties),
 
     updateTriggers: {
       getFillColor: timeStamp,
-      getLineColor: [strokeOpacity, selectedFeature]
+      getLineColor: [strokeOpacity, selectedFeature],
+      getLineWidth: selectedFeature
     },
   })
 }

@@ -3,7 +3,7 @@ import { scaleQuantize } from 'd3-scale'
 import { colors } from '../../utils/colors'
 import { domains } from '../../utils/domains'
 
-const buildScatterLayer = (data: any, id: string, timeStamp: number, handleClick: any, fillOpacity: number, strokeOpacity: number) => {
+const buildScatterLayer = (data: any, id: string, timeStamp: number, handleClick: any, fillOpacity: number) => {
 
   const colorScale = scaleQuantize<number[]>()
     .domain(domains[id])
@@ -43,7 +43,6 @@ const buildScatterLayer = (data: any, id: string, timeStamp: number, handleClick
 
     updateTriggers: {
       getFillColor: timeStamp,
-      getLineColor: 0//strokeOpacity
     },
   })
 

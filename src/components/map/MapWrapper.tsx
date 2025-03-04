@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import Map from "./MapSingle"
 import MapCompare from "./MapSplit"
@@ -22,9 +22,13 @@ const MapWrapper: React.FC<MapWrapperProps> = (props) => {
   const [timeStamp, setTimeStamp] = useState(0)
   const [showChart, setShowChart] = useState(false)
   const [localData, setLocalData] = useState({})
-  const [selectedFeature, setSelectedFeature] = useState(null)
+  const [selectedFeature, setSelectedFeature] = useState<string | null>(null)
 
   const updateLineChart = (data: any) => {
+    if(data.UNITID) {
+      setSelectedFeature(data.UNITID)
+    }
+    
     // Temporal data
     const filteredData = Object.fromEntries(
       Object.entries(data).filter(([key, ]) => !Number.isNaN(Number(key)))
@@ -36,6 +40,12 @@ const MapWrapper: React.FC<MapWrapperProps> = (props) => {
     }
   }
 
+  useEffect(() => {
+    setLocalData({})
+    setShowChart(false)
+    setSelectedFeature(null)
+  },[props.mainLayersIds, props.secondLayersIds, props.mode])
+
   const renderMap = () => {
     if(props.mode === "single") {
       return <Map 
@@ -46,7 +56,6 @@ const MapWrapper: React.FC<MapWrapperProps> = (props) => {
               setLocalData={setLocalData}
               handleClick={updateLineChart}
               selectedFeature={selectedFeature}
-              setSelectedFeature={setSelectedFeature}
               />
     
     } else if (props.mode === "side-by-side") {
@@ -58,6 +67,7 @@ const MapWrapper: React.FC<MapWrapperProps> = (props) => {
                 strokeOpacity={props.strokeOpacity}
                 setLocalData={setLocalData}
                 handleClick={updateLineChart}
+                selectedFeature={selectedFeature}
               />
       
     } else if (props.mode === "split") {
@@ -68,7 +78,8 @@ const MapWrapper: React.FC<MapWrapperProps> = (props) => {
                 fillOpacity={props.fillOpacity} 
                 strokeOpacity={props.strokeOpacity}
                 setLocalData={setLocalData}
-                handleClick={updateLineChart} 
+                handleClick={updateLineChart}
+                selectedFeature={selectedFeature}
                 />
     }
   }
@@ -79,6 +90,7 @@ const MapWrapper: React.FC<MapWrapperProps> = (props) => {
         data={localData}
         visible={showChart}
         setVisible={setShowChart}
+        setSelectedFeature={setSelectedFeature}
         timeStamp={timeStamp}
         />
       

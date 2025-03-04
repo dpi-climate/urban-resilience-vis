@@ -18,7 +18,6 @@ interface ILayersWrapper {
   fillOpacity: number
   strokeOpacity: number
   selectedFeature: any
-  setSelectedFeature: any
 }
 
 const LayersWrapper = (props: ILayersWrapper) => {
@@ -83,7 +82,6 @@ const LayersWrapper = (props: ILayersWrapper) => {
             props.timeStamp,
             props.handleClick,
             props.fillOpacity,
-            props.strokeOpacity
           )
         } else {
           return buildPolygonLayer(
@@ -94,7 +92,6 @@ const LayersWrapper = (props: ILayersWrapper) => {
             props.fillOpacity,
             props.strokeOpacity,
             props.selectedFeature,
-            props.setSelectedFeature
           )
         }
       })
