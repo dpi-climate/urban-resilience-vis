@@ -21,8 +21,6 @@ interface LayerSelectorProps {
   setSecondLayersIds: React.Dispatch<React.SetStateAction<string[]>>
 }
 
-type TSelectedSingle = Record<TFieldGroup, string | null>
-
 // For multi mode: which field is selected for option1 and option2 in each group
 type TSelectedMulti = Record<
   TFieldGroup,
@@ -35,8 +33,10 @@ type TSelectedMulti = Record<
 const LayerSelector: React.FC<LayerSelectorProps> = (props) => {
     
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null)
-  const [selectedSingle, setSelectedSingle] = useState<Partial<TSelectedSingle>>({} as TSelectedSingle)
-  const [selectedMulti, setSelectedMulti] = useState<TSelectedMulti>({} as TSelectedMulti)
+  const [selectedSingle, setSelectedSingle] = useState<Record<string, string | null>>({})
+  // const [selectedMulti, setSelectedMulti] = useState<TSelectedMulti>({} as TSelectedMulti)
+  const [selectedMulti, setSelectedMulti] = useState<Record<string, { option1: string | null, option2: string | null }>>({})
+
 
   const toggleExpand = (index: number) => {
     setExpandedIndex((prev) => (prev === index ? null : index))
@@ -45,58 +45,52 @@ const LayerSelector: React.FC<LayerSelectorProps> = (props) => {
   /**
    * SINGLE MODE: click a radio to toggle it. If already selected, unselect it.
    */
-  const handleSingleRadioClick = (group: TFieldGroup, fieldId: string) => {
-    const currentValue = selectedSingle[group] || null
-    const newValue = currentValue === fieldId ? null : fieldId
-    
+  const handleSingleRadioClick = (radioId: string, fieldId: string) => {
+    const currentValue = selectedSingle[radioId] || null;
+    const newValue = currentValue === fieldId ? null : fieldId;
     const updatedSelection = {
       ...selectedSingle,
-      [group]: newValue,
-    }
+      [radioId]: newValue,
+    };
   
-    setSelectedSingle(updatedSelection)
+    setSelectedSingle(updatedSelection);
   
-    const allSelected = Object.values(updatedSelection).filter(Boolean) as string[]
-    props.setMainLayersIds(allSelected)
-  }
+    // Get all selected field IDs from updatedSelection.
+    const allSelected = Object.values(updatedSelection).filter(Boolean) as string[];
+    props.setMainLayersIds(allSelected);
+  };
   
-
+  
   /**
    * MULTI MODE: separate "option1" and "option2" radio groups, 
    * each can have exactly one selected field, but can be unselected on second click.
    */
 
   const handleOptionRadioClick = (
-      group: TFieldGroup,
-      option: 'option1' | 'option2',
-      fieldId: string
-    ) => {
-      
-      const currentGroup = selectedMulti[group] || { option1: null, option2: null }
-      const newValue = currentGroup[option] === fieldId ? null : fieldId
-    
-      const updatedGroup = {
-        ...currentGroup,
-        [option]: newValue,
-      }
-    
-      const updatedSelection = {
-        ...selectedMulti,
-        [group]: updatedGroup,
-      }
-      
-      setSelectedMulti(updatedSelection)
-
-      const setFunction = option === "option1"
-        ? props.setMainLayersIds
-        : props.setSecondLayersIds
-
-      setFunction((prev) =>
-        newValue !== null
-          ? [...prev.filter((d) => d !== currentGroup[option]), fieldId]
-          : prev.filter((d) => d !== fieldId)
-      )
+    radioId: string,
+    option: 'option1' | 'option2',
+    fieldId: string
+  ) => {
+    const currentSelection = selectedMulti[radioId] || { option1: null, option2: null }
+    const newValue = currentSelection[option] === fieldId ? null : fieldId
+    const updatedSelection = {
+      ...selectedMulti,
+      [radioId]: { ...currentSelection, [option]: newValue },
+    }
+  
+    setSelectedMulti(updatedSelection)
+  
+    const setFunction = option === "option1"
+      ? props.setMainLayersIds
+      : props.setSecondLayersIds
+  
+    setFunction((prev) =>
+      newValue !== null
+        ? [...prev.filter((d) => d !== currentSelection[option]), fieldId]
+        : prev.filter((d) => d !== fieldId)
+    )
   }
+  
 
   const buttons: TFieldGroup[] = Object.keys(fields) as TFieldGroup[]
 
@@ -168,17 +162,18 @@ const LayerSelector: React.FC<LayerSelectorProps> = (props) => {
               {props.mode === 'single' ? (
                 // =========== SINGLE MODE ============
                 fields[group as keyof typeof fields].map((field: TField) => {
-                  const currentlySelected = selectedSingle[group] || null
-                  const isChecked = currentlySelected === field.id
+                  const currentlySelected = selectedSingle[field.radioId] || null;
+                  const isChecked = currentlySelected === field.id;
 
                   return (
                     <FormControlLabel
                       key={field.id}
                       control={
                         <Radio
-                          name={`single-${group}`}
+                          // name={`single-${group}`}
+                          name={`single-${field.radioId}`}
                           checked={isChecked}
-                          onClick={() => handleSingleRadioClick(group, field.id)}
+                          onClick={() => handleSingleRadioClick(field.radioId, field.id)}
                         />
                       }
                       label={field.name}
@@ -188,12 +183,9 @@ const LayerSelector: React.FC<LayerSelectorProps> = (props) => {
               ) : (
                 // =========== TWO OPTIONS MODE ============
                 fields[group as keyof typeof fields].map((field: TField) => {
-                  const groupState = selectedMulti[group] || {
-                    option1: null,
-                    option2: null,
-                  }
-                  const isChecked1 = groupState.option1 === field.id
-                  const isChecked2 = groupState.option2 === field.id
+                  const currentSelection = selectedMulti[field.radioId] || { option1: null, option2: null }
+                  const isChecked1 = currentSelection.option1 === field.id
+                  const isChecked2 = currentSelection.option2 === field.id
 
                   return (
                     <Box
@@ -209,10 +201,10 @@ const LayerSelector: React.FC<LayerSelectorProps> = (props) => {
                       <FormControlLabel
                         control={
                           <Radio
-                            name={`multi-${group}-option1`}
+                            name={`multi-${field.radioId}-option1`}
                             checked={isChecked1}
                             onClick={() =>
-                              handleOptionRadioClick(group, 'option1', field.id)
+                              handleOptionRadioClick(field.radioId, 'option1', field.id)
                             }
                           />
                         }
@@ -223,10 +215,10 @@ const LayerSelector: React.FC<LayerSelectorProps> = (props) => {
                       <FormControlLabel
                         control={
                           <Radio
-                            name={`multi-${group}-option2`}
+                            name={`multi-${field.radioId}-option2`}
                             checked={isChecked2}
                             onClick={() =>
-                              handleOptionRadioClick(group, 'option2', field.id)
+                              handleOptionRadioClick(field.radioId, 'option2', field.id)
                             }
                           />
                         }

@@ -4,19 +4,13 @@ export const fields: IFields = {
     Forecasts : [
         {
             id: "t2",
-            name: "Temperature (C)"
+            name: "Temperature (C)",
+            radioId: "radio1"
         },
-        // {
-        //     id: "co",
-        //     name: "CO"
-        // },
-        // {
-        //     id: "p25",
-        //     name: "PM2.5 (ug/m³)"
-        // },
         {
             id: "rh2",
-            name: "Relative Humidity 2m (%)"
+            name: "Relative Humidity 2m (%)",
+            radioId: "radio1"
         },
 
     ],
@@ -24,7 +18,8 @@ export const fields: IFields = {
     // Observations: [
     //     {
     //         id: "ncei_air_temp",
-    //         name: "Temp NCEI (C)"
+    //         name: "Temp NCEI (C)",
+    //         radioId: "radio2"
     //     }
     // ],
 
@@ -42,23 +37,28 @@ export const fields: IFields = {
     Sociodemographics: [
         {
             id: "rpl_theme1",
-            name: "Socioeconomic Status"
+            name: "Socioeconomic Status",
+            radioId: "radio1"
         },
         {
             id: "rpl_theme2",
-            name: "Household Characteristics"
+            name: "Household Characteristics",
+            radioId: "radio1"
         },
         {
             id: "rpl_theme3",
-            name: "Racial and Ethnic Minority Status"
+            name: "Racial and Ethnic Minority Status",
+            radioId: "radio1"
         },
         {
             id: "rpl_theme4",
-            name: "Housing Type/Transportation"
+            name: "Housing Type/Transportation",
+            radioId: "radio1"
         },
         {
             id: "rpl_themes",
-            name: "Overall Summary"
+            name: "Overall Summary",
+            radioId: "radio1"
         },
 
     ]
