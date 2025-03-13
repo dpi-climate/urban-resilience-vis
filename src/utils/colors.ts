@@ -60,7 +60,8 @@ export const colors: Record<string, number[][] | string> = {
     wind: rainbow,
     rain: rainbow,
 
-    air_temp_ncei: rainbow,
+    ncei_temp: rainbow,
+    ncei_rh: rainbow,
 
     rpl_theme1: "interpolateBlues",
     rpl_theme2: "interpolateBlues",

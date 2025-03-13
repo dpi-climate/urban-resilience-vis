@@ -62,7 +62,7 @@ const MapLegend = (props:IMapLegend) => {
         {merdedArr.map((obj: MergedID, index: number) => {
           const field = findFieldById(obj.id)
 
-          if(field?.layerType === "windLayer") {
+          if(field?.layerType === "vector") {
             return null
           
           } else {

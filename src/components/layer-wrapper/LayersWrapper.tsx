@@ -2,9 +2,11 @@ import { useRef, useState, useEffect } from "react"
 import { MapboxOverlay } from "@deck.gl/mapbox"
 import { Layer } from "@deck.gl/core"
 
-import buildScatterLayer from "./scatterLayer"
+// import buildGridLayer from "./gridLayer"
 import buildPolygonLayer from "./polygonLayer"
-import buildIconLayer from "./windLayer"
+import buildVectorLayer from "./windLayer"
+import buildScatterLayer from "./scatterLayer"
+import buildRasterTileLayer from "./tyleLayer"
 
 import { TSpatialLevel } from "../../types-and-interfaces/types"
 import { spatialLevels } from "../../utils/spatial-levels"
@@ -46,43 +48,48 @@ const LayersWrapper = (props: ILayersWrapper) => {
 
         const field = findFieldById(id)
 
-        if (field?.layerType !== "multiple") {
-          try {
-            const response = await fetch(`./src/assets/${id}.geojson`)
-
-            if (response.ok) {
-              const jsonData = await response.json()
-              dataMap[id] = { data: jsonData, level: null, type: field?.layerType }
-              fileFound = true
-              break
+        if(field) {
+          if(field.layerType === "multiple") {
+            for (const level of circularLevels) {
+              try {
+                const response = await fetch(`./src/assets/${level}_${id}.geojson`)
+                console.log(`${level}_${id}.geojson`)
+                if (response.ok) {
+                  const jsonData = await response.json()
+                  dataMap[id] = { data: jsonData, level, type: null }
+                  fileFound = true
+                  break
+                }
+              } catch (error) {
+                // Log error if needed, or simply try the next level
+                console.error(`Error fetching file for ${level}_${id}:`, error)
+              }
             }
-          } catch (error) {
-            // Log error if needed, or simply try the next level
-            console.error(`Error fetching file for ${id}:`, error)
-          }
-          
-        }
-        else {
-          for (const level of circularLevels) {
+    
+            if (!fileFound) {
+              console.error(`No file found for field id ${id} with any spatial level.`)
+              dataMap[id] = {}
+            }
+
+          } else {
             try {
-              const response = await fetch(`./src/assets/${level}_${id}.geojson`)
+              const response = await fetch(`./src/assets/${id}.geojson`)
   
               if (response.ok) {
                 const jsonData = await response.json()
-                dataMap[id] = { data: jsonData, level, type: null }
+                dataMap[id] = { data: jsonData, level: null, type: field?.layerType }
                 fileFound = true
                 break
               }
             } catch (error) {
               // Log error if needed, or simply try the next level
-              console.error(`Error fetching file for ${level}_${id}:`, error)
+              console.error(`Error fetching file for ${id}:`, error)
+            }
+            if (!fileFound) {
+              console.error(`No file found for field id ${id}.`)
+              dataMap[id] = {}
             }
           }
-  
-          if (!fileFound) {
-            console.error(`No file found for field id ${id} with any spatial level.`)
-          }
-  
         }
       }
       
@@ -97,15 +104,30 @@ const LayersWrapper = (props: ILayersWrapper) => {
     if (props.fieldIds.every(id => fetchedData[id])) {
       const layersArr: Layer[] = props.fieldIds.map(id => {
         const field = findFieldById(id)
-        console.log()
-        if(field?.layerType === "windLayer") {
-          return buildIconLayer(
+        
+        if(field?.layerType === "vector") {
+          return buildVectorLayer(
             fetchedData[id].data,
             props.timeStamp,
+            props.spatialLevel,
+            props.fillOpacity,
           )
 
         } else {
           if(fetchedData[id].level === "pt") {
+            return buildRasterTileLayer(
+              props.timeStamp,
+              id,
+              props.fillOpacity,
+            )
+            // return buildGridLayer(
+            //   fetchedData[id].data,
+            //   id,
+            //   props.timeStamp,
+            //   props.handleClick,
+            //   props.fillOpacity,
+            // )
+          } else if (fetchedData[id].type === "scatter") {
             return buildScatterLayer(
               fetchedData[id].data,
               id,
@@ -123,11 +145,12 @@ const LayersWrapper = (props: ILayersWrapper) => {
               props.strokeOpacity,
               props.selectedFeature,
             )
+
           }
         }
       })
 
-      // layersArr.push(buildIconLayer())
+      // layersArr.push(buildVectorLayer())
 
       setLayers(layersArr)
     }
@@ -139,10 +162,14 @@ const LayersWrapper = (props: ILayersWrapper) => {
 
     if (!overlayRef.current) {
       overlayRef.current = new MapboxOverlay({ layers })
-      props.map.addControl(overlayRef.current as unknown as mapboxgl.IControl)
+      props.map.addControl(overlayRef.current as mapboxgl.IControl)
+
     } else {
       overlayRef.current.setProps({ layers })
     }
+
+    return () => {}
+
   }, [props.map, layers])
 
   return null

@@ -35,9 +35,11 @@ const Map: React.FC<IMapProps> = (props) => {
 
     const mapInstance = new mapboxgl.Map({
       container: mapContainerRef.current,
-      style: "mapbox://styles/mapbox/standard-satellite",//"mapbox://styles/carolvfs/clxnzay8z02qh01qkhftqheen" ,
+      style: "mapbox://styles/mapbox/standard-satellite", //"mapbox://styles/carolvfs/clxnzay8z02qh01qkhftqheen" , 
       center: [-89.129879, 40.092361],
+      // center: [-122.4, 37.74],
       zoom: 6,
+      projection: 'mercator'
       // minZoom: 6
     })
 
@@ -48,6 +50,10 @@ const Map: React.FC<IMapProps> = (props) => {
     setMap(mapInstance)
 
     return () => mapInstance.remove()
+
+  },[])
+
+  useEffect(() => {
 
   },[])
 

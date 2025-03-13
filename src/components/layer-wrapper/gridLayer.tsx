@@ -3,9 +3,9 @@ import * as d3 from "d3"
 import { colors } from '../../utils/colors'
 import { domains } from '../../utils/domains'
 
-const buildScatterLayer = (data: any, id: string, timeStamp: number, handleClick: any, fillOpacity: number) => {
+const buildGridLayer = (data: any, id: string, timeStamp: number, handleClick: any, fillOpacity: number) => {
 
-  const colorScale = typeof(colors[id]) === "string"      
+  const colorScale = typeof(colors[id]) === "string"
       ? d3.scaleSequential()
           .domain([0, 1])
           .interpolator((d3 as any)[colors[id]])
@@ -15,22 +15,23 @@ const buildScatterLayer = (data: any, id: string, timeStamp: number, handleClick
           .range(colors[id])
 
   const scatterLayer = new ScatterplotLayer({
-    id: 'scatter-plot',
+    id: `grid-plot-${id}-${timeStamp}`,
     data: data.features,
-    getRadius: 20,
-    radiusScale: 0.001,
-    radiusMinPixels: 8,
-    radiusMaxPixels: 1000,
+    // getRadius: 500,
+    getRadius: 10,
+    radiusScale: 1,
+    radiusMinPixels: 2,
+    radiusMaxPixels: 500,
 
-    // getRadius: (d) => 20,
     getPosition: d => d.geometry.coordinates,
     
-    getFillColor: (f): [number, number, number] => {
+    getFillColor: (f): [number, number, number] | [number, number, number, number] => {
       const yearKey = String(timeStamp);
       const value = Number(f.properties[yearKey] ?? f.properties.value)
 
       if (value === null || isNaN(value)) {
         return [160, 160, 180]
+        // return [0, 0, 0, 0]
       
       } else if (typeof colors[id] === "string") {
         const hexColor = (colorScale as d3.ScaleSequential<string>)(value) as string
@@ -42,12 +43,9 @@ const buildScatterLayer = (data: any, id: string, timeStamp: number, handleClick
       }
     },
 
-    getLineColor: () => [0, 0, 0],
-    stroked: true,
-    lineWidthMinPixels: 2,
-
-    opacity: fillOpacity,
+    opacity: 1,//fillOpacity,
     pickable: true,
+    stroked: false,
 
     onClick: d => {
       // console.log(d)
@@ -64,4 +62,4 @@ const buildScatterLayer = (data: any, id: string, timeStamp: number, handleClick
   return scatterLayer
 }
 
-export default buildScatterLayer
+export default buildGridLayer
