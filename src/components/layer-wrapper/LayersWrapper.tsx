@@ -7,10 +7,15 @@ import buildPolygonLayer from "./polygonLayer"
 import buildVectorLayer from "./windLayer"
 import buildScatterLayer from "./scatterLayer"
 import buildRasterTileLayer from "./tyleLayer"
+import buildRouteLayer from "./routeLayer"
 
 import { TSpatialLevel } from "../../types-and-interfaces/types"
 import { spatialLevels } from "../../utils/spatial-levels"
 import { findFieldById } from "../../utils/support"
+
+import mapboxgl from "mapbox-gl"
+
+mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN as string
 
 interface ILayersWrapper {
   map: mapboxgl.Map
@@ -21,6 +26,8 @@ interface ILayersWrapper {
   fillOpacity: number
   strokeOpacity: number
   selectedFeature: any
+  route: any
+  routePoints: number[][]
 }
 
 const LayersWrapper = (props: ILayersWrapper) => {
@@ -28,6 +35,8 @@ const LayersWrapper = (props: ILayersWrapper) => {
   const overlayRef = useRef<MapboxOverlay | null>(null)
   const [fetchedData, setFetchedData] = useState<Record<string, any>>({})
   const [layers, setLayers] = useState<Layer[]>([])
+
+  const [fetchedRoute, setFetchedRoute] = useState<Record<string, any>>({})
 
   // Fetch Data
   useEffect(() => {
@@ -93,11 +102,50 @@ const LayersWrapper = (props: ILayersWrapper) => {
         }
       }
       
-      setFetchedData(dataMap)
+      // setFetchedData(dataMap)
+      setFetchedData(prevFetchedData => {
+        if("route" in prevFetchedData) {
+          dataMap["route"] = prevFetchedData["route"]
+        }
+        return dataMap
+      })
     }
 
     fetchData()
   }, [props.fieldIds, props.spatialLevel])
+
+  // Fetch Route
+  useEffect(() => {
+    const fetchRoute = async () => {
+      if(props.routePoints.length <= 1) {
+        setFetchedData((prevFetchedData) => {
+          const { route, ...rest } = prevFetchedData;
+          return rest
+        })
+        
+        return
+      }
+
+      try {
+        const coordsString = props.routePoints
+          .map((coord) => `${coord[0]},${coord[1]}`)
+          .join(";")
+
+        const query = `https://api.mapbox.com/directions/v5/mapbox/driving/${coordsString}?geometries=geojson&overview=full&access_token=${mapboxgl.accessToken}`;
+        const response = await fetch(query)
+        const data = await response.json()
+        if (data.routes && data.routes.length > 0) {
+          const routeGeoJson = data.routes[0].geometry
+          setFetchedData((prevFetchedData) => ({ ...prevFetchedData, "route": routeGeoJson }))
+        }
+      } catch (error) {
+        console.error('Error fetching route:', error)
+      }
+    }
+
+    fetchRoute()
+
+  },[props.routePoints])
 
   // Build Layers
   useEffect(() => {
@@ -150,10 +198,15 @@ const LayersWrapper = (props: ILayersWrapper) => {
         }
       })
 
+      if("route" in fetchedData) {
+        layersArr.push(buildRouteLayer(fetchedData.route))
+      }
+
       // layersArr.push(buildVectorLayer())
 
       setLayers(layersArr)
     }
+
   }, [fetchedData, props.fieldIds, props.timeStamp, props.handleClick, props.fillOpacity, props.strokeOpacity, props.spatialLevel])
 
   // Load Layers
@@ -164,13 +217,14 @@ const LayersWrapper = (props: ILayersWrapper) => {
       overlayRef.current = new MapboxOverlay({ layers })
       props.map.addControl(overlayRef.current as mapboxgl.IControl)
 
+
     } else {
       overlayRef.current.setProps({ layers })
     }
 
     return () => {}
 
-  }, [props.map, layers])
+  }, [props.map, layers, ])
 
   return null
 }

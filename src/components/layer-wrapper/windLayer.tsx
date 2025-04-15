@@ -19,7 +19,7 @@ export default function buildWindLayer(data: any, timeStamp: number, spatialLeve
   // }
 
   // const filteredFeatures = data.features 
-  console.log(spatialLevel)
+
   const filteredFeatures =
     spatialLevel == "pt"
       ? data.features.filter((_, i) => i % 5 === 0)
@@ -35,7 +35,7 @@ export default function buildWindLayer(data: any, timeStamp: number, spatialLeve
       ? 0.01
       : spatialLevel == "ct"
         ? 0.006
-        : 0.003
+        : 0.0008
 
   
 

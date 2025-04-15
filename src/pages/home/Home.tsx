@@ -85,7 +85,7 @@ const Home = () => {
   const renderHeader = () => {
     return (
       <div className="my-header">
-        <div className="header-text">Urban Scalable Toolkit for Infrastructure Resilient Regions</div>
+        <div className="header-text">Early Warning System</div>
         <div className="logo-container">
           <img className="climate-logo" src="./src/assets/new-climate-logo-background.png" alt="climate-logo"/>
           <img className="cleets-logo" src="./src/assets/cleets logo-01.png" alt="cleets-logo" />
