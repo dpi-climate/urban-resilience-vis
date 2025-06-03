@@ -44,6 +44,7 @@ const MapSideBySide: React.FC<IMapSideBySide> = (props) => {
       style: "mapbox://styles/mapbox/standard-satellite",//'mapbox://styles/mapbox/light-v11',
       center: [-89.129879, 40.092361],
         zoom: 6,
+        projection: "mercator"
     });
 
     const after = new mapboxgl.Map({
@@ -51,6 +52,7 @@ const MapSideBySide: React.FC<IMapSideBySide> = (props) => {
         style: "mapbox://styles/mapbox/standard-satellite",//'mapbox://styles/mapbox/dark-v11',
         center: [-89.129879, 40.092361],
         zoom: 6,
+        projection: "mercator"
     });
 
     setBeforeMap(before)
