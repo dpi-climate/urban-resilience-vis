@@ -39,6 +39,7 @@ const Map: React.FC<IMapProps> = (props) => {
       center: [-89.129879, 40.092361],
       zoom: 6,
       // minZoom: 6
+      projection: "mercator"
     })
 
     mapInstance.on("zoom", () => {
